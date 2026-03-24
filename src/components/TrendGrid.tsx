@@ -1,9 +1,9 @@
 import { motion } from "framer-motion";
 import { Flame, Heart, Bookmark, Eye } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/i18n/LanguageContext";
 
 import jewelry1 from "@/assets/jewelry-1.jpg";
 import jewelry2 from "@/assets/jewelry-2.jpg";
@@ -23,6 +23,7 @@ const trendingItems = [
 
 const TrendGrid = () => {
   const { toast } = useToast();
+  const { t } = useLanguage();
   const [saved, setSaved] = useState<Set<number>>(new Set());
 
   const toggleSave = (id: number) => {
@@ -32,7 +33,7 @@ const TrendGrid = () => {
       else next.add(id);
       return next;
     });
-    toast({ title: saved.has(id) ? "Retiré du catalogue" : "Ajouté au catalogue ✨" });
+    toast({ title: saved.has(id) ? t("trends.removedFromCatalog") : t("trends.savedToCatalog") });
   };
 
   return (
@@ -53,16 +54,16 @@ const TrendGrid = () => {
               loading="lazy"
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
             />
-            <div className="absolute top-3 left-3 flex gap-2">
+            <div className="absolute top-3 start-3 flex gap-2">
               <Badge className="gold-gradient text-primary-foreground text-xs border-0 font-body">
-                <Flame className="w-3 h-3 mr-1" />
+                <Flame className="w-3 h-3 me-1" />
                 {item.viralScore}%
               </Badge>
               <Badge variant="secondary" className="text-xs font-body bg-card/90 backdrop-blur-sm text-foreground">
                 {item.platform}
               </Badge>
             </div>
-            <div className="absolute top-3 right-3">
+            <div className="absolute top-3 end-3">
               <button
                 onClick={() => toggleSave(item.id)}
                 className="w-8 h-8 rounded-full bg-card/90 backdrop-blur-sm flex items-center justify-center hover:bg-card transition-colors"
@@ -70,7 +71,7 @@ const TrendGrid = () => {
                 <Bookmark className={`w-4 h-4 ${saved.has(item.id) ? 'fill-gold text-gold' : 'text-foreground'}`} />
               </button>
             </div>
-            <div className="absolute bottom-3 left-3">
+            <div className="absolute bottom-3 start-3">
               <Badge variant="outline" className="text-xs font-body bg-card/90 backdrop-blur-sm border-0 text-foreground">
                 {item.style}
               </Badge>
@@ -83,7 +84,7 @@ const TrendGrid = () => {
                 <Heart className="w-3.5 h-3.5 text-gold" /> {item.likes}
               </span>
               <span className="flex items-center gap-1">
-                <Eye className="w-3.5 h-3.5" /> Tendance
+                <Eye className="w-3.5 h-3.5" /> {t("trends.trending")}
               </span>
             </div>
           </div>

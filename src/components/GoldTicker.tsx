@@ -1,8 +1,9 @@
-import { motion } from "framer-motion";
 import { TrendingUp, TrendingDown } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useLanguage } from "@/i18n/LanguageContext";
 
 const GoldTicker = () => {
+  const { t } = useLanguage();
   const [prices, setPrices] = useState({
     gold24k: 742.50,
     gold18k: 556.88,
@@ -38,9 +39,12 @@ const GoldTicker = () => {
   return (
     <div className="gold-gradient-dark overflow-hidden">
       <div className="flex items-center h-12">
-        <div className="flex items-center gap-2 px-4 border-r border-primary-foreground/20">
+        <div className="flex items-center gap-2 px-4 border-e border-primary-foreground/20">
           <div className="w-2 h-2 rounded-full bg-green-400 pulse-gold" />
-          <span className="text-primary-foreground/80 text-xs font-body font-semibold uppercase tracking-wider">Live</span>
+          <span className="text-primary-foreground/80 text-xs font-body font-semibold uppercase tracking-wider">{t("ticker.live")}</span>
+        </div>
+        <div className="flex items-center gap-2 px-4 border-e border-primary-foreground/20">
+          <span className="text-primary-foreground/60 text-xs font-body">{t("ticker.goldPrice")}</span>
         </div>
         <div className="ticker-scroll flex items-center whitespace-nowrap">
           <PriceItem label="Or 24K" price={prices.gold24k} change={prices.change24k} />

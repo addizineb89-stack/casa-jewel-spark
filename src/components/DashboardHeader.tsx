@@ -1,18 +1,23 @@
 import { Bell, Search, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useLanguage } from "@/i18n/LanguageContext";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 const DashboardHeader = () => {
+  const { t } = useLanguage();
+
   return (
     <header className="flex items-center justify-between px-6 py-4 border-b border-border bg-card/50 backdrop-blur-sm">
       <div>
-        <h1 className="text-2xl font-display font-bold gold-text">Casa Gold Intelligence</h1>
-        <p className="text-sm text-muted-foreground font-body">Tableau de bord professionnel — Casablanca</p>
+        <h1 className="text-2xl font-display font-bold gold-text">{t("app.title")}</h1>
+        <p className="text-sm text-muted-foreground font-body">{t("app.subtitle")}</p>
       </div>
       <div className="flex items-center gap-3">
+        <LanguageSwitcher />
         <div className="relative hidden md:block">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-          <Input placeholder="Rechercher un modèle..." className="pl-10 w-64 bg-background border-border" />
+          <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <Input placeholder={t("header.search")} className="ps-10 w-64 bg-background border-border" />
         </div>
         <Button variant="ghost" size="icon" className="text-foreground hover:bg-secondary">
           <Bell className="w-5 h-5" />
