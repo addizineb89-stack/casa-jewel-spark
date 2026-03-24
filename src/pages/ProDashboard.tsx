@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
 import {
   ArrowLeft, TrendingUp, TrendingDown, Eye, MessageSquare,
   Flame, Settings, FileText, Globe, Search, Crown, Send, Phone
@@ -13,10 +12,6 @@ import { Label } from "@/components/ui/label";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { useNavigate } from "react-router-dom";
 import DashboardHeader from "@/components/DashboardHeader";
-import {
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip,
-  ResponsiveContainer, BarChart, Bar
-} from "recharts";
 
 const GOLD_PRICES: Record<string, number> = { "18k": 523, "21k": 610, "24k": 697 };
 const GOLD_TRENDS: Record<string, number> = { "18k": 1.2, "21k": 0.8, "24k": 1.5 };
@@ -49,6 +44,8 @@ const PRICE_HISTORY = Array.from({ length: 30 }, (_, i) => ({
   gold24k: Math.round(680 + Math.sin(i / 3) * 20 + i * 0.6),
 }));
 
+const maxPrice = Math.max(...PRICE_HISTORY.map((d) => d.gold24k));
+
 const ProDashboard = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
@@ -69,16 +66,18 @@ const ProDashboard = () => {
     const lines = [
       shopName || "Casa Gold",
       "━━━━━━━━━━━━",
-      `${t("quote.karat")}: ${quoteKarat.toUpperCase()}`,
-      `${t("quote.weight")}: ${weight}g`,
-      `${t("quote.gold")}: ${goldCost.toFixed(0)} MAD`,
-      `${t("quote.labor")}: ${labor.toFixed(0)} MAD`,
-      `${t("pro.profitLabel")}: ${profitAmount.toFixed(0)} MAD`,
+      t("quote.karat") + ": " + quoteKarat.toUpperCase(),
+      t("quote.weight") + ": " + weight + "g",
+      t("quote.gold") + ": " + goldCost.toFixed(0) + " MAD",
+      t("quote.labor") + ": " + labor.toFixed(0) + " MAD",
+      t("pro.profitLabel") + ": " + profitAmount.toFixed(0) + " MAD",
       "━━━━━━━━━━━━",
-      `${t("quote.totalPrice")}: ${totalQuote.toFixed(0)} MAD`,
+      t("quote.totalPrice") + ": " + totalQuote.toFixed(0) + " MAD",
     ];
-    window.open(`https://wa.me/?text=${encodeURIComponent(lines.join("\n"))}`, "_blank");
+    window.open("https://wa.me/?text=" + encodeURIComponent(lines.join("\n")), "_blank");
   };
+
+  const maxMentions = Math.max(...SOCIAL_HEATMAP.map((s) => s.mentions));
 
   return (
     <div className="min-h-screen bg-background">
@@ -111,28 +110,27 @@ const ProDashboard = () => {
               <Flame className="w-5 h-5 text-gold" />
               <span className="font-display font-semibold text-foreground">{t("pro.marketPulse")}</span>
             </div>
-            {[
-              { k: "18k", label: t("pro.gold18k") },
-              { k: "21k", label: t("pro.gold21k") },
-              { k: "24k", label: t("pro.gold24k") },
-            ].map((item) => {
-              const trendVal = GOLD_TRENDS[item.k] || 0;
-              return (
-                <div key={item.k} className="flex items-center gap-2">
-                  <span className="font-body text-sm text-muted-foreground">{item.label}</span>
-                  <span className="font-display font-bold text-foreground">{GOLD_PRICES[item.k]}</span>
-                  <span className="text-xs text-muted-foreground">{t("pro.perGram")}</span>
-                  {trendVal >= 0 ? (
-                    <TrendingUp className="w-4 h-4" style={{ color: "#16a34a" }} />
-                  ) : (
-                    <TrendingDown className="w-4 h-4 text-destructive" />
-                  )}
-                  <span className="text-xs font-body" style={{ color: trendVal >= 0 ? "#16a34a" : "#dc2626" }}>
-                    {trendVal >= 0 ? "+" : ""}{trendVal}%
-                  </span>
-                </div>
-              );
-            })}
+            <div className="flex items-center gap-2">
+              <span className="font-body text-sm text-muted-foreground">{t("pro.gold18k")}</span>
+              <span className="font-display font-bold text-foreground">{GOLD_PRICES["18k"]}</span>
+              <span className="text-xs text-muted-foreground">{t("pro.perGram")}</span>
+              <TrendingUp className="w-4 h-4 text-accent" />
+              <span className="text-xs font-body text-accent">+{GOLD_TRENDS["18k"]}%</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="font-body text-sm text-muted-foreground">{t("pro.gold21k")}</span>
+              <span className="font-display font-bold text-foreground">{GOLD_PRICES["21k"]}</span>
+              <span className="text-xs text-muted-foreground">{t("pro.perGram")}</span>
+              <TrendingUp className="w-4 h-4 text-accent" />
+              <span className="text-xs font-body text-accent">+{GOLD_TRENDS["21k"]}%</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="font-body text-sm text-muted-foreground">{t("pro.gold24k")}</span>
+              <span className="font-display font-bold text-foreground">{GOLD_PRICES["24k"]}</span>
+              <span className="text-xs text-muted-foreground">{t("pro.perGram")}</span>
+              <TrendingUp className="w-4 h-4 text-accent" />
+              <span className="text-xs font-body text-accent">+{GOLD_TRENDS["24k"]}%</span>
+            </div>
           </CardContent>
         </Card>
 
@@ -155,29 +153,28 @@ const ProDashboard = () => {
 
           {/* OVERVIEW TAB */}
           <TabsContent value="overview" className="space-y-6">
-            {/* Gold Price Chart */}
+            {/* Gold Price Mini Chart (CSS bars) */}
             <Card className="relative overflow-hidden">
               <div className="zellige-card" />
               <CardHeader className="relative">
                 <CardTitle className="font-display text-lg text-foreground">{t("pro.priceEvolution")}</CardTitle>
               </CardHeader>
               <CardContent className="relative">
-                <ResponsiveContainer width="100%" height={260}>
-                  <LineChart data={PRICE_HISTORY}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#e0d5c0" />
-                    <XAxis dataKey="day" tick={{ fontSize: 12 }} stroke="#8a7e6b" />
-                    <YAxis tick={{ fontSize: 12 }} stroke="#8a7e6b" />
-                    <Tooltip
-                      contentStyle={{
-                        background: "#f5f0e8",
-                        border: "1px solid #e0d5c0",
-                        borderRadius: "8px",
-                      }}
+                <div className="flex items-end gap-0.5 h-40">
+                  {PRICE_HISTORY.map((d) => (
+                    <div
+                      key={d.day}
+                      className="flex-1 gold-gradient rounded-t-sm opacity-80 hover:opacity-100 transition-opacity"
+                      style={{ height: (d.gold24k / maxPrice) * 100 + "%" }}
+                      title={"J" + d.day + ": " + d.gold24k + " MAD/g (24K)"}
                     />
-                    <Line type="monotone" dataKey="gold18k" stroke="#bf8c2c" strokeWidth={2.5} dot={false} name="18K" />
-                    <Line type="monotone" dataKey="gold24k" stroke="#8a6914" strokeWidth={2.5} dot={false} name="24K" />
-                  </LineChart>
-                </ResponsiveContainer>
+                  ))}
+                </div>
+                <div className="flex justify-between mt-2 text-xs text-muted-foreground font-body">
+                  <span>J1</span>
+                  <span>J15</span>
+                  <span>J30</span>
+                </div>
               </CardContent>
             </Card>
 
@@ -202,16 +199,22 @@ const ProDashboard = () => {
                       </div>
                       <div className="flex items-center gap-2">
                         <span className="text-xs text-muted-foreground font-body">{item.scans} {t("pro.scans")}</span>
-                        <span className="text-xs font-medium" style={{ color: item.trend >= 0 ? "#16a34a" : "#dc2626" }}>
-                          {item.trend >= 0 ? "+" : ""}{item.trend}%
-                        </span>
+                        {item.trend >= 0 ? (
+                          <Badge variant="secondary" className="text-xs gap-1 border-0">
+                            <TrendingUp className="w-3 h-3" /> +{item.trend}%
+                          </Badge>
+                        ) : (
+                          <Badge variant="secondary" className="text-destructive text-xs gap-1 border-0">
+                            <TrendingDown className="w-3 h-3" /> {item.trend}%
+                          </Badge>
+                        )}
                       </div>
                     </div>
                   ))}
                 </CardContent>
               </Card>
 
-              {/* Social Heatmap */}
+              {/* Social Heatmap (CSS bars) */}
               <Card className="relative overflow-hidden h-full">
                 <div className="zellige-card" />
                 <CardHeader className="relative">
@@ -220,22 +223,21 @@ const ProDashboard = () => {
                   </CardTitle>
                   <CardDescription className="font-body">{t("pro.socialHeatmapSub")}</CardDescription>
                 </CardHeader>
-                <CardContent className="relative">
-                  <ResponsiveContainer width="100%" height={220}>
-                    <BarChart data={SOCIAL_HEATMAP} layout="vertical">
-                      <CartesianGrid strokeDasharray="3 3" stroke="#e0d5c0" />
-                      <XAxis type="number" tick={{ fontSize: 11 }} stroke="#8a7e6b" />
-                      <YAxis dataKey="style" type="category" width={120} tick={{ fontSize: 11, fill: "#2d2a24" }} />
-                      <Tooltip
-                        contentStyle={{
-                          background: "#f5f0e8",
-                          border: "1px solid #e0d5c0",
-                          borderRadius: "8px",
-                        }}
-                      />
-                      <Bar dataKey="mentions" fill="#bf8c2c" radius={[0, 6, 6, 0]} />
-                    </BarChart>
-                  </ResponsiveContainer>
+                <CardContent className="relative space-y-3">
+                  {SOCIAL_HEATMAP.map((item) => (
+                    <div key={item.style}>
+                      <div className="flex justify-between text-xs font-body mb-1">
+                        <span className="text-foreground">{item.style}</span>
+                        <span className="text-muted-foreground">{item.mentions.toLocaleString()} {t("pro.mentions")}</span>
+                      </div>
+                      <div className="h-3 bg-secondary rounded-full overflow-hidden">
+                        <div
+                          className="h-full gold-gradient rounded-full transition-all"
+                          style={{ width: (item.mentions / maxMentions) * 100 + "%" }}
+                        />
+                      </div>
+                    </div>
+                  ))}
                 </CardContent>
               </Card>
             </div>
@@ -264,11 +266,12 @@ const ProDashboard = () => {
                       <button
                         key={k}
                         onClick={() => setQuoteKarat(k)}
-                        className={`py-2 rounded-lg text-sm font-body font-medium transition-all ${
-                          quoteKarat === k
+                        className={
+                          "py-2 rounded-lg text-sm font-body font-medium transition-all " +
+                          (quoteKarat === k
                             ? "gold-gradient text-primary-foreground"
-                            : "bg-secondary text-secondary-foreground hover:bg-accent"
-                        }`}
+                            : "bg-secondary text-secondary-foreground hover:bg-accent")
+                        }
                       >
                         {k.toUpperCase()}
                       </button>
