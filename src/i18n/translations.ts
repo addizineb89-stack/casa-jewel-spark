@@ -226,6 +226,24 @@ export const translations = {
   // Shop Settings tab
   "pro.settingsTitle": { fr: "Paramètres de la Boutique", en: "Shop Settings", ar: "إعدادات المتجر" },
   "pro.settingsSub": { fr: "Personnalisez votre profil professionnel", en: "Customize your professional profile", ar: "خصّص ملفك المهني" },
+  "pro.settings.storeName": { fr: "Nom de la bijouterie", en: "Store Name", ar: "اسم المتجر" },
+  "pro.settings.storeNamePlaceholder": { fr: "ex: Bijouterie El Firdaous", en: "e.g.: El Firdaous Jewelry", ar: "مثال: مجوهرات الفردوس" },
+  "pro.settings.whatsapp": { fr: "Numéro WhatsApp", en: "WhatsApp Number", ar: "رقم واتساب" },
+  "pro.settings.whatsappPlaceholder": { fr: "+212 6XX XXX XXX", en: "+212 6XX XXX XXX", ar: "+212 6XX XXX XXX" },
+  "pro.settings.whatsappDesc": { fr: "Pour recevoir les demandes clients", en: "To receive customer requests", ar: "لاستقبال طلبات الزبائن" },
+  "pro.settings.address": { fr: "Adresse", en: "Address", ar: "العنوان" },
+  "pro.settings.addressPlaceholder": { fr: "ex: 45 Rue des Bijoutiers, Derb Sultan, Casablanca", en: "e.g.: 45 Rue des Bijoutiers, Derb Sultan, Casablanca", ar: "مثال: 45 شارع الصاغة، درب السلطان، الدار البيضاء" },
+  "pro.settings.defaultLabor": { fr: "Prix main d'œuvre par défaut", en: "Default Labor Cost", ar: "تكلفة العمل الافتراضية" },
+  "pro.settings.defaultLaborPlaceholder": { fr: "ex: 150", en: "e.g.: 150", ar: "مثال: 150" },
+  "pro.settings.defaultLaborDesc": { fr: "Façon par défaut en MAD, appliquée automatiquement aux devis", en: "Default façon in MAD, auto-applied to quotes", ar: "تكلفة الصنعة الافتراضية بالدرهم، تُطبّق تلقائياً على العروض" },
+  "pro.settings.logo": { fr: "Logo de la boutique", en: "Store Logo", ar: "شعار المتجر" },
+  "pro.settings.logoDesc": { fr: "Affiché sur vos devis PDF. Format JPG ou PNG, max 2 Mo.", en: "Shown on your PDF quotes. JPG or PNG, max 2 MB.", ar: "يظهر على عروض PDF الخاصة بك. JPG أو PNG، حد أقصى 2 ميغا." },
+  "pro.settings.logoUpload": { fr: "Télécharger un logo", en: "Upload Logo", ar: "رفع الشعار" },
+  "pro.settings.logoChange": { fr: "Changer le logo", en: "Change Logo", ar: "تغيير الشعار" },
+  "pro.settings.save": { fr: "Enregistrer les modifications", en: "Save Changes", ar: "حفظ التغييرات" },
+  "pro.settings.saved": { fr: "Modifications enregistrées !", en: "Changes saved!", ar: "تم حفظ التغييرات!" },
+  "pro.settings.profileSection": { fr: "Profil de la boutique", en: "Store Profile", ar: "ملف المتجر" },
+  "pro.settings.quotesSection": { fr: "Paramètres des devis", en: "Quote Settings", ar: "إعدادات العروض" },
 } as const;
 
 export type TranslationKey = keyof typeof translations;
