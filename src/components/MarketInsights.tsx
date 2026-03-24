@@ -43,7 +43,7 @@ const MarketInsights = () => {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
-            className="bg-card rounded-lg p-5 relative overflow-hidden shadow-[var(--shadow-card)]"
+            className="bg-card rounded-lg p-5 relative overflow-hidden shadow-sm"
           >
             <div className="zellige-card" />
             <div className="relative z-10">
@@ -61,29 +61,29 @@ const MarketInsights = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-card rounded-lg p-6 relative overflow-hidden shadow-[var(--shadow-card)]">
+        <div className="bg-card rounded-lg p-6 relative overflow-hidden shadow-sm">
           <div className="zellige-card" />
           <div className="relative z-10">
             <h3 className="font-display text-lg font-semibold text-foreground mb-4">{t("insights.commentsByCategory")}</h3>
             <ResponsiveContainer width="100%" height={250}>
               <BarChart data={categoryData}>
-                <XAxis dataKey="name" tick={{ fontSize: 11, fontFamily: 'DM Sans' }} stroke="hsl(var(--muted-foreground))" />
-                <YAxis tick={{ fontSize: 11, fontFamily: 'DM Sans' }} stroke="hsl(var(--muted-foreground))" />
+                <XAxis dataKey="name" tick={{ fontSize: 11, fontFamily: 'DM Sans' }} stroke="#8a7e6b" />
+                <YAxis tick={{ fontSize: 11, fontFamily: 'DM Sans' }} stroke="#8a7e6b" />
                 <Tooltip
                   contentStyle={{
-                    background: 'hsl(var(--card))',
-                    border: '1px solid hsl(var(--border))',
+                    background: '#f5f0e8',
+                    border: '1px solid #e0d5c0',
                     borderRadius: '8px',
-                    fontFamily: 'DM Sans',
+                    fontFamily: "'DM Sans', sans-serif",
                   }}
                 />
-                <Bar dataKey="comments" fill="hsl(var(--primary))" radius={[6, 6, 0, 0]} />
+                <Bar dataKey="comments" fill="#bf8c2c" radius={[6, 6, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
         </div>
 
-        <div className="bg-card rounded-lg p-6 relative overflow-hidden shadow-[var(--shadow-card)]">
+        <div className="bg-card rounded-lg p-6 relative overflow-hidden shadow-sm">
           <div className="zellige-card" />
           <div className="relative z-10">
             <h3 className="font-display text-lg font-semibold text-foreground mb-4">{t("insights.beldiVsModern")}</h3>
@@ -121,7 +121,7 @@ const MarketInsights = () => {
         </div>
       </div>
 
-      <div className="bg-card rounded-lg p-6 relative overflow-hidden shadow-[var(--shadow-card)]">
+      <div className="bg-card rounded-lg p-6 relative overflow-hidden shadow-sm">
         <div className="zellige-card" />
         <div className="relative z-10">
           <h3 className="font-display text-lg font-semibold text-foreground mb-4">{t("insights.topModels")}</h3>
