@@ -169,6 +169,63 @@ export const translations = {
     ar: "تحليل ترندات من دبي وباريس وميلانو",
   },
   "nav.plans": { fr: "Forfaits", en: "Plans", ar: "الباقات" },
+  "nav.proDash": { fr: "Espace Pro", en: "Pro Dashboard", ar: "لوحة المحترف" },
+
+  // Pro Dashboard
+  "pro.title": { fr: "Tableau de Bord Professionnel", en: "Professional Dashboard", ar: "لوحة القيادة المهنية" },
+  "pro.subtitle": { fr: "Votre intelligence marché en temps réel", en: "Your real-time market intelligence", ar: "ذكاء السوق في الوقت الفعلي" },
+  "pro.badge": { fr: "Pro", en: "Pro", ar: "محترف" },
+  "pro.marketPulse": { fr: "Pouls du Marché", en: "Market Pulse", ar: "نبض السوق" },
+  "pro.gold18k": { fr: "Or 18K", en: "18K Gold", ar: "ذهب 18 قيراط" },
+  "pro.gold21k": { fr: "Or 21K", en: "21K Gold", ar: "ذهب 21 قيراط" },
+  "pro.gold24k": { fr: "Or 24K", en: "24K Gold", ar: "ذهب 24 قيراط" },
+  "pro.perGram": { fr: "MAD/g", en: "MAD/g", ar: "درهم/غ" },
+
+  // Pro Tabs
+  "pro.tab.overview": { fr: "Aperçu", en: "Overview", ar: "نظرة عامة" },
+  "pro.tab.globalTrends": { fr: "Tendances Mondiales", en: "Global Trends", ar: "ترندات عالمية" },
+  "pro.tab.myQuotes": { fr: "Mes Devis", en: "My Quotes", ar: "عروضي" },
+  "pro.tab.shopSettings": { fr: "Paramètres Boutique", en: "Shop Settings", ar: "إعدادات المتجر" },
+
+  // Top Scanned
+  "pro.topScanned": { fr: "Top Scannés à Casa", en: "Top Scanned in Casa", ar: "الأكثر مسحاً في كازا" },
+  "pro.topScannedSub": { fr: "Les 5 modèles les plus recherchés cette semaine", en: "Top 5 most searched models this week", ar: "أكثر 5 نماذج بحثاً هذا الأسبوع" },
+  "pro.scans": { fr: "scans", en: "scans", ar: "مسح" },
+
+  // Social Heatmap
+  "pro.socialHeatmap": { fr: "Heatmap Social", en: "Social Media Heatmap", ar: "خريطة حرارة التواصل" },
+  "pro.socialHeatmapSub": { fr: "Styles en explosion sur TikTok & Instagram au Maroc", en: "Styles exploding on TikTok & Instagram in Morocco", ar: "الأنماط المنتشرة على تيك توك وإنستغرام في المغرب" },
+  "pro.mentions": { fr: "mentions", en: "mentions", ar: "إشارة" },
+
+  // Quotation Maker
+  "pro.quotationMaker": { fr: "Créateur de Devis", en: "Quotation Maker", ar: "منشئ العروض" },
+  "pro.shopName": { fr: "Nom de la boutique", en: "Shop name", ar: "اسم المتجر" },
+  "pro.shopNamePlaceholder": { fr: "ex: Bijouterie El Firdaous", en: "e.g.: El Firdaous Jewelry", ar: "مثال: مجوهرات الفردوس" },
+  "pro.profitMargin": { fr: "Marge bénéficiaire (%)", en: "Profit Margin (%)", ar: "هامش الربح (%)" },
+  "pro.profitPlaceholder": { fr: "ex: 15", en: "e.g.: 15", ar: "مثال: 15" },
+  "pro.generateQuote": { fr: "Générer le Devis", en: "Generate Quote", ar: "إنشاء العرض" },
+  "pro.shareWhatsapp": { fr: "Partager via WhatsApp", en: "Share via WhatsApp", ar: "مشاركة عبر واتساب" },
+  "pro.quotePreview": { fr: "Aperçu du Devis", en: "Quote Preview", ar: "معاينة العرض" },
+  "pro.profitLabel": { fr: "Marge", en: "Profit", ar: "الربح" },
+
+  // Customer Requests
+  "pro.customerRequests": { fr: "Demandes Clients", en: "Customer Requests", ar: "طلبات الزبائن" },
+  "pro.customerRequestsSub": { fr: "Utilisateurs recherchant un bijoutier", en: "Users looking for a jeweler", ar: "مستخدمون يبحثون عن صائغ" },
+  "pro.lookingFor": { fr: "Cherche", en: "Looking for", ar: "يبحث عن" },
+  "pro.contact": { fr: "Contacter", en: "Contact", ar: "تواصل" },
+
+  // Gold Price Chart
+  "pro.priceEvolution": { fr: "Évolution du prix sur 30 jours", en: "30-Day Price Evolution", ar: "تطور السعر على 30 يوماً" },
+  "pro.day": { fr: "Jour", en: "Day", ar: "يوم" },
+
+  // Global Trends tab
+  "pro.globalTrendsTitle": { fr: "Tendances Mondiales", en: "Global Trends", ar: "الترندات العالمية" },
+  "pro.globalTrendsSub": { fr: "Tendances depuis Dubaï, Paris et Milan", en: "Trends from Dubai, Paris, and Milan", ar: "ترندات من دبي وباريس وميلانو" },
+  "pro.comingSoon": { fr: "Bientôt disponible", en: "Coming soon", ar: "قريباً" },
+
+  // Shop Settings tab
+  "pro.settingsTitle": { fr: "Paramètres de la Boutique", en: "Shop Settings", ar: "إعدادات المتجر" },
+  "pro.settingsSub": { fr: "Personnalisez votre profil professionnel", en: "Customize your professional profile", ar: "خصّص ملفك المهني" },
 } as const;
 
 export type TranslationKey = keyof typeof translations;
