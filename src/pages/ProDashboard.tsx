@@ -51,6 +51,7 @@ const priceHistory = Array.from({ length: 30 }, (_, i) => ({
 }));
 
 const ProDashboard = () => {
+  // Pro Dashboard v2 - fixed rendering
   const { t } = useLanguage();
   const navigate = useNavigate();
   const [shopName, setShopName] = useState("");
