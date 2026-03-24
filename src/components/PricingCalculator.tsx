@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/i18n/LanguageContext";
 
 const GOLD_PRICES: Record<string, number> = {
   "24k": 742.50,
@@ -16,6 +17,7 @@ const GOLD_PRICES: Record<string, number> = {
 
 const PricingCalculator = () => {
   const { toast } = useToast();
+  const { t } = useLanguage();
   const [karat, setKarat] = useState("18k");
   const [weight, setWeight] = useState("");
   const [laborCost, setLaborCost] = useState("");
@@ -25,13 +27,13 @@ const PricingCalculator = () => {
   const totalPrice = goldCost + labor;
 
   const handleWhatsAppQuote = () => {
-    const msg = `✨ *Devis Casa Gold* ✨\n\n💎 Caratage: ${karat.toUpperCase()}\n⚖️ Poids: ${weight}g\n💰 Or: ${goldCost.toFixed(2)} MAD\n🔨 Façon: ${labor.toFixed(2)} MAD\n\n*Prix Total: ${totalPrice.toFixed(2)} MAD*`;
+    const msg = `✨ *${t("quote.title")}* ✨\n\n💎 ${t("quote.karat")}: ${karat.toUpperCase()}\n⚖️ ${t("quote.weight")}: ${weight}g\n💰 ${t("quote.gold")}: ${goldCost.toFixed(2)} MAD\n🔨 ${t("quote.labor")}: ${labor.toFixed(2)} MAD\n\n*${t("quote.totalPrice")}: ${totalPrice.toFixed(2)} MAD*`;
     window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank");
   };
 
   const handleCopy = () => {
     navigator.clipboard.writeText(`${totalPrice.toFixed(2)} MAD`);
-    toast({ title: "Prix copié !", description: `${totalPrice.toFixed(2)} MAD` });
+    toast({ title: t("pricing.copied"), description: `${totalPrice.toFixed(2)} MAD` });
   };
 
   return (
@@ -43,14 +45,14 @@ const PricingCalculator = () => {
             <Calculator className="w-5 h-5 text-primary-foreground" />
           </div>
           <div>
-            <h3 className="font-display text-lg font-semibold text-foreground">Moteur de Prix</h3>
-            <p className="text-sm text-muted-foreground font-body">Calculez le prix final instantanément</p>
+            <h3 className="font-display text-lg font-semibold text-foreground">{t("pricing.title")}</h3>
+            <p className="text-sm text-muted-foreground font-body">{t("pricing.subtitle")}</p>
           </div>
         </div>
 
         <div className="space-y-4">
           <div>
-            <Label className="text-sm font-body font-medium text-foreground">Caratage</Label>
+            <Label className="text-sm font-body font-medium text-foreground">{t("pricing.karat")}</Label>
             <Select value={karat} onValueChange={setKarat}>
               <SelectTrigger className="mt-1 bg-background border-border">
                 <SelectValue />
@@ -64,10 +66,10 @@ const PricingCalculator = () => {
           </div>
 
           <div>
-            <Label className="text-sm font-body font-medium text-foreground">Poids (grammes)</Label>
+            <Label className="text-sm font-body font-medium text-foreground">{t("pricing.weight")}</Label>
             <Input
               type="number"
-              placeholder="ex: 12.5"
+              placeholder={t("pricing.weightPlaceholder")}
               value={weight}
               onChange={(e) => setWeight(e.target.value)}
               className="mt-1 bg-background border-border"
@@ -75,10 +77,10 @@ const PricingCalculator = () => {
           </div>
 
           <div>
-            <Label className="text-sm font-body font-medium text-foreground">Façon (MAD)</Label>
+            <Label className="text-sm font-body font-medium text-foreground">{t("pricing.labor")}</Label>
             <Input
               type="number"
-              placeholder="ex: 350"
+              placeholder={t("pricing.laborPlaceholder")}
               value={laborCost}
               onChange={(e) => setLaborCost(e.target.value)}
               className="mt-1 bg-background border-border"
@@ -87,25 +89,25 @@ const PricingCalculator = () => {
 
           <div className="bg-ivory-deep rounded-lg p-4 mt-4">
             <div className="flex justify-between text-sm text-muted-foreground font-body mb-1">
-              <span>Coût or</span>
+              <span>{t("pricing.goldCost")}</span>
               <span>{goldCost.toFixed(2)} MAD</span>
             </div>
             <div className="flex justify-between text-sm text-muted-foreground font-body mb-2">
-              <span>Façon</span>
+              <span>{t("pricing.laborCost")}</span>
               <span>{labor.toFixed(2)} MAD</span>
             </div>
             <div className="border-t border-border pt-2 flex justify-between items-baseline">
-              <span className="font-display font-semibold text-foreground">Total</span>
+              <span className="font-display font-semibold text-foreground">{t("pricing.total")}</span>
               <span className="font-display text-2xl font-bold gold-text">{totalPrice.toFixed(2)} MAD</span>
             </div>
           </div>
 
           <div className="flex gap-2 pt-2">
             <Button onClick={handleCopy} variant="outline" className="flex-1 border-border text-foreground hover:bg-secondary">
-              <Copy className="w-4 h-4 mr-2" /> Copier
+              <Copy className="w-4 h-4 me-2" /> {t("pricing.copy")}
             </Button>
             <Button onClick={handleWhatsAppQuote} className="flex-1 gold-gradient text-primary-foreground hover:opacity-90">
-              <MessageCircle className="w-4 h-4 mr-2" /> WhatsApp
+              <MessageCircle className="w-4 h-4 me-2" /> {t("pricing.whatsapp")}
             </Button>
           </div>
         </div>

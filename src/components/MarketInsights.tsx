@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { BarChart3, MessageSquare, TrendingUp, ArrowUp, ArrowDown } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
+import { useLanguage } from "@/i18n/LanguageContext";
 
 const categoryData = [
   { name: "Bracelet Beldi", comments: 2340, trend: 12 },
@@ -25,14 +26,18 @@ const topCommented = [
 ];
 
 const MarketInsights = () => {
+  const { t } = useLanguage();
+
+  const stats = [
+    { label: t("insights.commentsMonth"), value: "8,870", change: "+12%", icon: MessageSquare },
+    { label: t("insights.topModel"), value: "Bracelet Beldi", change: t("insights.trendUp"), icon: TrendingUp },
+    { label: t("insights.dominantStyle"), value: `${t("insights.beldi")} (62%)`, change: t("insights.vsBeldiModern"), icon: BarChart3 },
+  ];
+
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {[
-          { label: "Commentaires ce mois", value: "8,870", change: "+12%", icon: MessageSquare },
-          { label: "Modèle #1 Maroc", value: "Bracelet Beldi", change: "Tendance ↑", icon: TrendingUp },
-          { label: "Style dominant", value: "Beldi (62%)", change: "vs Moderne", icon: BarChart3 },
-        ].map((stat, i) => (
+        {stats.map((stat, i) => (
           <motion.div
             key={i}
             initial={{ opacity: 0, y: 10 }}
@@ -59,7 +64,7 @@ const MarketInsights = () => {
         <div className="bg-card rounded-lg p-6 relative overflow-hidden shadow-[var(--shadow-card)]">
           <div className="zellige-card" />
           <div className="relative z-10">
-            <h3 className="font-display text-lg font-semibold text-foreground mb-4">Commentaires par catégorie</h3>
+            <h3 className="font-display text-lg font-semibold text-foreground mb-4">{t("insights.commentsByCategory")}</h3>
             <ResponsiveContainer width="100%" height={250}>
               <BarChart data={categoryData}>
                 <XAxis dataKey="name" tick={{ fontSize: 11, fontFamily: 'DM Sans' }} stroke="hsl(var(--muted-foreground))" />
@@ -81,7 +86,7 @@ const MarketInsights = () => {
         <div className="bg-card rounded-lg p-6 relative overflow-hidden shadow-[var(--shadow-card)]">
           <div className="zellige-card" />
           <div className="relative z-10">
-            <h3 className="font-display text-lg font-semibold text-foreground mb-4">Beldi vs Moderne</h3>
+            <h3 className="font-display text-lg font-semibold text-foreground mb-4">{t("insights.beldiVsModern")}</h3>
             <div className="flex items-center justify-center">
               <ResponsiveContainer width="100%" height={200}>
                 <PieChart>
@@ -103,10 +108,12 @@ const MarketInsights = () => {
               </ResponsiveContainer>
             </div>
             <div className="flex justify-center gap-6 mt-2">
-              {styleDistribution.map((s) => (
+              {styleDistribution.map((s, i) => (
                 <div key={s.name} className="flex items-center gap-2">
                   <div className="w-3 h-3 rounded-full" style={{ background: s.color }} />
-                  <span className="text-sm font-body text-foreground">{s.name} ({s.value}%)</span>
+                  <span className="text-sm font-body text-foreground">
+                    {i === 0 ? t("insights.beldi") : t("insights.modern")} ({s.value}%)
+                  </span>
                 </div>
               ))}
             </div>
@@ -117,7 +124,7 @@ const MarketInsights = () => {
       <div className="bg-card rounded-lg p-6 relative overflow-hidden shadow-[var(--shadow-card)]">
         <div className="zellige-card" />
         <div className="relative z-10">
-          <h3 className="font-display text-lg font-semibold text-foreground mb-4">Top Modèles — Plus Commentés au Maroc</h3>
+          <h3 className="font-display text-lg font-semibold text-foreground mb-4">{t("insights.topModels")}</h3>
           <div className="space-y-3">
             {topCommented.map((item, i) => (
               <div key={i} className="flex items-center justify-between py-3 border-b border-border last:border-0">

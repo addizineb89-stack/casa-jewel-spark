@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&family=Cairo:wght@300;400;500;600;700&display=swap');
 
 @layer base {
   :root {
@@ -53,6 +53,7 @@
 
     --font-display: 'Playfair Display', serif;
     --font-body: 'DM Sans', sans-serif;
+    --font-arabic: 'Cairo', sans-serif;
 
     --sidebar-background: 42 30% 92%;
     --sidebar-foreground: 30 10% 20%;
@@ -77,6 +78,12 @@
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
+  }
+
+  [dir="rtl"] body,
+  [dir="rtl"] h1, [dir="rtl"] h2, [dir="rtl"] h3,
+  [dir="rtl"] h4, [dir="rtl"] h5, [dir="rtl"] h6 {
+    font-family: var(--font-arabic);
   }
 }
 
