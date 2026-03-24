@@ -1,4 +1,4 @@
-import { Bell, Search, User, Crown } from "lucide-react";
+import { Bell, Search, User, Crown, BarChart3 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useLanguage } from "@/i18n/LanguageContext";
@@ -19,6 +19,9 @@ const DashboardHeader = () => {
         <LanguageSwitcher />
         <Button variant="ghost" size="sm" onClick={() => navigate("/plans")} className="text-gold font-body gap-1.5 hover:bg-secondary">
           <Crown className="w-4 h-4" /> {t("nav.plans")}
+        </Button>
+        <Button variant="ghost" size="sm" onClick={() => navigate("/pro")} className="text-gold font-body gap-1.5 hover:bg-secondary">
+          <BarChart3 className="w-4 h-4" /> {t("nav.proDash")}
         </Button>
         <div className="relative hidden md:block">
           <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
