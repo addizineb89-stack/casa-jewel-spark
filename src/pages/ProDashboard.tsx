@@ -164,25 +164,25 @@ const ProDashboard = () => {
                 <CardContent className="relative">
                   <ResponsiveContainer width="100%" height={260}>
                     <LineChart data={priceHistory}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-                      <XAxis dataKey="day" tick={{ fontSize: 12 }} stroke="hsl(var(--muted-foreground))" />
-                      <YAxis tick={{ fontSize: 12 }} stroke="hsl(var(--muted-foreground))" />
+                      <CartesianGrid strokeDasharray="3 3" stroke="#e0d5c0" />
+                      <XAxis dataKey="day" tick={{ fontSize: 12 }} stroke="#8a7e6b" />
+                      <YAxis tick={{ fontSize: 12 }} stroke="#8a7e6b" />
                       <Tooltip
                         contentStyle={{
-                          background: "hsl(var(--card))",
-                          border: "1px solid hsl(var(--border))",
+                          background: "#f5f0e8",
+                          border: "1px solid #e0d5c0",
                           borderRadius: "8px",
-                          fontFamily: "var(--font-body)",
+                          fontFamily: "'DM Sans', sans-serif",
                         }}
                       />
                       <defs>
                         <linearGradient id="goldLine" x1="0" y1="0" x2="1" y2="0">
-                          <stop offset="0%" stopColor="hsl(40, 65%, 50%)" />
-                          <stop offset="100%" stopColor="hsl(42, 70%, 65%)" />
+                          <stop offset="0%" stopColor="#bf8c2c" />
+                          <stop offset="100%" stopColor="#d4a84b" />
                         </linearGradient>
                         <linearGradient id="goldLine24" x1="0" y1="0" x2="1" y2="0">
-                          <stop offset="0%" stopColor="hsl(38, 70%, 35%)" />
-                          <stop offset="100%" stopColor="hsl(40, 65%, 50%)" />
+                          <stop offset="0%" stopColor="#8a6914" />
+                          <stop offset="100%" stopColor="#bf8c2c" />
                         </linearGradient>
                       </defs>
                       <Line type="monotone" dataKey="18k" stroke="url(#goldLine)" strokeWidth={2.5} dot={false} />
@@ -244,24 +244,24 @@ const ProDashboard = () => {
                   <CardContent className="relative">
                     <ResponsiveContainer width="100%" height={220}>
                       <BarChart data={socialHeatmap} layout="vertical">
-                        <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-                        <XAxis type="number" tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" />
+                        <CartesianGrid strokeDasharray="3 3" stroke="#e0d5c0" />
+                        <XAxis type="number" tick={{ fontSize: 11 }} stroke="#8a7e6b" />
                         <YAxis
                           dataKey="style" type="category" width={130}
-                          tick={{ fontSize: 11, fill: "hsl(var(--foreground))" }}
+                          tick={{ fontSize: 11, fill: "#2d2a24" }}
                         />
                         <Tooltip
                           contentStyle={{
-                            background: "hsl(var(--card))",
-                            border: "1px solid hsl(var(--border))",
+                            background: "#f5f0e8",
+                            border: "1px solid #e0d5c0",
                             borderRadius: "8px",
-                            fontFamily: "var(--font-body)",
+                            fontFamily: "'DM Sans', sans-serif",
                           }}
                         />
                         <defs>
                           <linearGradient id="barGold" x1="0" y1="0" x2="1" y2="0">
-                            <stop offset="0%" stopColor="hsl(40, 65%, 50%)" />
-                            <stop offset="100%" stopColor="hsl(42, 70%, 65%)" />
+                            <stop offset="0%" stopColor="#bf8c2c" />
+                            <stop offset="100%" stopColor="#d4a84b" />
                           </linearGradient>
                         </defs>
                         <Bar dataKey="mentions" fill="url(#barGold)" radius={[0, 6, 6, 0]} />
