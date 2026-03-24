@@ -3,6 +3,7 @@ import {
   ArrowLeft, TrendingUp, TrendingDown, Eye, MessageSquare,
   Flame, Settings, FileText, Globe, Search, Crown, Send, Phone
 } from "lucide-react";
+import ShopSettingsForm from "@/components/ShopSettingsForm";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -384,15 +385,7 @@ const ProDashboard = () => {
 
           {/* SHOP SETTINGS TAB */}
           <TabsContent value="settings">
-            <Card className="relative overflow-hidden">
-              <div className="zellige-card" />
-              <CardContent className="relative flex flex-col items-center justify-center py-20">
-                <Settings className="w-16 h-16 text-gold mb-4" />
-                <h3 className="font-display text-xl font-semibold text-foreground mb-2">{t("pro.settingsTitle")}</h3>
-                <p className="text-muted-foreground font-body text-center max-w-md">{t("pro.settingsSub")}</p>
-                <Badge variant="secondary" className="mt-4">{t("pro.comingSoon")}</Badge>
-              </CardContent>
-            </Card>
+            <ShopSettingsForm />
           </TabsContent>
         </Tabs>
       </main>
