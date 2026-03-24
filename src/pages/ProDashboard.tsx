@@ -112,12 +112,11 @@ const ProDashboard = () => {
                 <Flame className="w-5 h-5 text-gold" />
                 <span className="font-display font-semibold text-foreground">{t("pro.marketPulse")}</span>
               </div>
-              {(["18k", "21k", "24k"] as const).map((k) => {
-                const key = `pro.gold${k === "18k" ? "18k" : k === "21k" ? "21k" : "24k"}` as const;
+              {([{ k: "18k" as const, tKey: "pro.gold18k" as const }, { k: "21k" as const, tKey: "pro.gold21k" as const }, { k: "24k" as const, tKey: "pro.gold24k" as const }]).map(({ k, tKey }) => {
                 const trend = goldTrends[k];
                 return (
                   <div key={k} className="flex items-center gap-2">
-                    <span className="font-body text-sm text-muted-foreground">{t(key)}</span>
+                    <span className="font-body text-sm text-muted-foreground">{t(tKey)}</span>
                     <span className="font-display font-bold text-foreground">{goldPrices[k]}</span>
                     <span className="text-xs text-muted-foreground">{t("pro.perGram")}</span>
                     {trend >= 0 ? (
