@@ -4,6 +4,7 @@ import {
   Flame, Settings, FileText, Globe, Search, Crown, Send, Phone
 } from "lucide-react";
 import ShopSettingsForm from "@/components/ShopSettingsForm";
+import QuotationGenerator from "@/components/QuotationGenerator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -373,14 +374,7 @@ const ProDashboard = () => {
 
           {/* MY QUOTES TAB */}
           <TabsContent value="quotes">
-            <Card className="relative overflow-hidden">
-              <div className="zellige-card" />
-              <CardContent className="relative flex flex-col items-center justify-center py-20">
-                <FileText className="w-16 h-16 text-gold mb-4" />
-                <h3 className="font-display text-xl font-semibold text-foreground mb-2">{t("pro.tab.myQuotes")}</h3>
-                <p className="text-muted-foreground font-body text-center max-w-md">{t("pro.comingSoon")}</p>
-              </CardContent>
-            </Card>
+            <QuotationGenerator />
           </TabsContent>
 
           {/* SHOP SETTINGS TAB */}

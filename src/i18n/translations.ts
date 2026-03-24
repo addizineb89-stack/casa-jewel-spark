@@ -244,6 +244,18 @@ export const translations = {
   "pro.settings.saved": { fr: "Modifications enregistrées !", en: "Changes saved!", ar: "تم حفظ التغييرات!" },
   "pro.settings.profileSection": { fr: "Profil de la boutique", en: "Store Profile", ar: "ملف المتجر" },
   "pro.settings.quotesSection": { fr: "Paramètres des devis", en: "Quote Settings", ar: "إعدادات العروض" },
+
+  // Quotation Generator
+  "quotes.formTitle": { fr: "Créer un Devis", en: "Create a Quote", ar: "إنشاء عرض سعر" },
+  "quotes.formSub": { fr: "Générez un devis professionnel et partagez-le via WhatsApp", en: "Generate a professional quote and share it via WhatsApp", ar: "أنشئ عرض سعر احترافي وشاركه عبر واتساب" },
+  "quotes.photo": { fr: "Photo du bijou", en: "Jewelry Photo", ar: "صورة المجوهرات" },
+  "quotes.uploadPhoto": { fr: "Télécharger une photo", en: "Upload a photo", ar: "رفع صورة" },
+  "quotes.orSelectTrend": { fr: "Ou sélectionnez un modèle tendance :", en: "Or select a trending model:", ar: "أو اختر نموذجاً رائجاً:" },
+  "quotes.karat": { fr: "Caratage de l'or", en: "Gold Karat", ar: "عيار الذهب" },
+  "quotes.liveCalc": { fr: "Calcul en direct", en: "Live Calculation", ar: "الحساب المباشر" },
+  "quotes.previewTitle": { fr: "Aperçu du Reçu", en: "Receipt Preview", ar: "معاينة الإيصال" },
+  "quotes.receipt": { fr: "Devis", en: "Quote", ar: "عرض سعر" },
+  "quotes.generateShare": { fr: "Générer & Partager via WhatsApp", en: "Generate & Share via WhatsApp", ar: "إنشاء ومشاركة عبر واتساب" },
 } as const;
 
 export type TranslationKey = keyof typeof translations;
