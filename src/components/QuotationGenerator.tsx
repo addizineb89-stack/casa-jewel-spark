@@ -11,8 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { useToast } from "@/hooks/use-toast";
-
-const GOLD_PRICES: Record<string, number> = { "18k": 523, "21k": 610, "24k": 697 };
+import { useGoldPrices } from "@/hooks/useGoldPrices";
 
 const TREND_MODELS = [
   { name: "Bague Beldi Fassi", img: "💍" },
@@ -25,6 +24,7 @@ const TREND_MODELS = [
 const QuotationGenerator = () => {
   const { t } = useLanguage();
   const { toast } = useToast();
+  const { prices: GOLD_PRICES } = useGoldPrices();
   const photoInputRef = useRef<HTMLInputElement>(null);
 
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
@@ -43,7 +43,7 @@ const QuotationGenerator = () => {
 
   const weightNum = parseFloat(weight) || 0;
   const laborNum = parseFloat(labor) || 0;
-  const goldPrice = GOLD_PRICES[karat] || 523;
+  const goldPrice = (GOLD_PRICES[karat as keyof typeof GOLD_PRICES] as number) || 523;
   const goldCost = weightNum * goldPrice;
   const totalPrice = goldCost + laborNum;
   const isValid = weightNum > 0;

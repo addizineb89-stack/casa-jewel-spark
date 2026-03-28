@@ -6,23 +6,17 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/i18n/LanguageContext";
-
-const GOLD_PRICES: Record<string, number> = {
-  "24k": 742.50,
-  "22k": 680.63,
-  "18k": 556.88,
-  "14k": 433.13,
-  "9k": 278.44,
-};
+import { useGoldPrices } from "@/hooks/useGoldPrices";
 
 const PricingCalculator = () => {
   const { toast } = useToast();
   const { t } = useLanguage();
+  const { prices: GOLD_PRICES } = useGoldPrices();
   const [karat, setKarat] = useState("18k");
   const [weight, setWeight] = useState("");
   const [laborCost, setLaborCost] = useState("");
 
-  const goldCost = parseFloat(weight || "0") * (GOLD_PRICES[karat] || 0);
+  const goldCost = parseFloat(weight || "0") * (GOLD_PRICES[karat as keyof typeof GOLD_PRICES] as number || 0);
   const labor = parseFloat(laborCost || "0");
   const totalPrice = goldCost + labor;
 

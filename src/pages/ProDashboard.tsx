@@ -14,9 +14,7 @@ import { Label } from "@/components/ui/label";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { useNavigate } from "react-router-dom";
 import DashboardHeader from "@/components/DashboardHeader";
-
-const GOLD_PRICES: Record<string, number> = { "18k": 523, "21k": 610, "24k": 697 };
-const GOLD_TRENDS: Record<string, number> = { "18k": 1.2, "21k": 0.8, "24k": 1.5 };
+import { useGoldPrices } from "@/hooks/useGoldPrices";
 
 const TOP_SCANNED = [
   { name: "Bague Beldi Fassi", scans: 342, trend: 18 },
@@ -51,6 +49,8 @@ const maxPrice = Math.max(...PRICE_HISTORY.map((d) => d.gold24k));
 const ProDashboard = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
+  const { prices: GOLD_PRICES } = useGoldPrices();
+  const GOLD_TRENDS: Record<string, number> = { "18k": 1.2, "21k": 0.8, "24k": 1.5 };
   const [shopName, setShopName] = useState("");
   const [quoteWeight, setQuoteWeight] = useState("");
   const [quoteLabor, setQuoteLabor] = useState("");
@@ -60,7 +60,7 @@ const ProDashboard = () => {
   const weight = parseFloat(quoteWeight) || 0;
   const labor = parseFloat(quoteLabor) || 0;
   const profitPct = parseFloat(quoteProfit) || 0;
-  const goldCost = weight * (GOLD_PRICES[quoteKarat] || 523);
+  const goldCost = weight * ((GOLD_PRICES[quoteKarat as keyof typeof GOLD_PRICES] as number) || 523);
   const profitAmount = (goldCost + labor) * (profitPct / 100);
   const totalQuote = goldCost + labor + profitAmount;
 

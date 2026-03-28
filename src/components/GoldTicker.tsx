@@ -1,37 +1,20 @@
-import { TrendingUp, TrendingDown } from "lucide-react";
-import { useState, useEffect } from "react";
+import { TrendingUp } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
+import { useGoldPrices } from "@/hooks/useGoldPrices";
 
 const GoldTicker = () => {
   const { t } = useLanguage();
-  const [prices, setPrices] = useState({
-    gold24k: 742.50,
-    gold18k: 556.88,
-    change24k: 1.2,
-    change18k: 0.9,
-  });
+  const { prices } = useGoldPrices();
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setPrices((prev) => ({
-        gold24k: prev.gold24k + (Math.random() - 0.48) * 2,
-        gold18k: prev.gold18k + (Math.random() - 0.48) * 1.5,
-        change24k: prev.change24k + (Math.random() - 0.5) * 0.1,
-        change18k: prev.change18k + (Math.random() - 0.5) * 0.08,
-      }));
-    }, 3000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const PriceItem = ({ label, price, change }: { label: string; price: number; change: number }) => (
+  const PriceItem = ({ label, price }: { label: string; price: number }) => (
     <div className="flex items-center gap-3 px-6">
       <span className="text-primary-foreground/70 text-sm font-body font-medium">{label}</span>
       <span className="text-primary-foreground font-display font-bold text-lg">
         {price.toFixed(2)} MAD/g
       </span>
-      <span className={`flex items-center gap-1 text-sm font-medium ${change >= 0 ? 'text-green-300' : 'text-red-300'}`}>
-        {change >= 0 ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
-        {change >= 0 ? '+' : ''}{change.toFixed(2)}%
+      <span className="flex items-center gap-1 text-sm font-medium text-green-300">
+        <TrendingUp className="w-3 h-3" />
+        Live
       </span>
     </div>
   );
@@ -47,13 +30,17 @@ const GoldTicker = () => {
           <span className="text-primary-foreground/60 text-xs font-body">{t("ticker.goldPrice")}</span>
         </div>
         <div className="ticker-scroll flex items-center whitespace-nowrap">
-          <PriceItem label="Or 24K" price={prices.gold24k} change={prices.change24k} />
+          <PriceItem label="Or 9K"  price={prices['9k']}  />
           <span className="text-primary-foreground/30 mx-2">•</span>
-          <PriceItem label="Or 18K" price={prices.gold18k} change={prices.change18k} />
+          <PriceItem label="Or 14K" price={prices['14k']} />
           <span className="text-primary-foreground/30 mx-2">•</span>
-          <PriceItem label="Or 24K" price={prices.gold24k} change={prices.change24k} />
+          <PriceItem label="Or 18K" price={prices['18k']} />
           <span className="text-primary-foreground/30 mx-2">•</span>
-          <PriceItem label="Or 18K" price={prices.gold18k} change={prices.change18k} />
+          <PriceItem label="Or 21K" price={prices['21k']} />
+          <span className="text-primary-foreground/30 mx-2">•</span>
+          <PriceItem label="Or 22K" price={prices['22k']} />
+          <span className="text-primary-foreground/30 mx-2">•</span>
+          <PriceItem label="Or 24K" price={prices['24k']} />
         </div>
       </div>
     </div>
