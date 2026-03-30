@@ -15,6 +15,7 @@ import { useLanguage } from "@/i18n/LanguageContext";
 import { useNavigate } from "react-router-dom";
 import DashboardHeader from "@/components/DashboardHeader";
 import { useGoldPrices } from "@/hooks/useGoldPrices";
+import SocialContentGenerator from "@/components/SocialContentGenerator";
 
 const TOP_SCANNED = [
   { name: "Bague Beldi Fassi", scans: 342, trend: 18 },
@@ -147,6 +148,9 @@ const ProDashboard = () => {
             </TabsTrigger>
             <TabsTrigger value="quotes" className="font-body data-[state=active]:gold-gradient data-[state=active]:text-primary-foreground gap-2">
               <FileText className="w-4 h-4" /> {t("pro.tab.myQuotes")}
+            </TabsTrigger>
+            <TabsTrigger value="social" className="font-body data-[state=active]:gold-gradient data-[state=active]:text-primary-foreground gap-2">
+              <Send className="w-4 h-4" /> Social AI
             </TabsTrigger>
             <TabsTrigger value="settings" className="font-body data-[state=active]:gold-gradient data-[state=active]:text-primary-foreground gap-2">
               <Settings className="w-4 h-4" /> {t("pro.tab.shopSettings")}
@@ -378,6 +382,10 @@ const ProDashboard = () => {
           </TabsContent>
 
           {/* SHOP SETTINGS TAB */}
+          <TabsContent value="social" className="space-y-6">
+            <SocialContentGenerator />
+          </TabsContent>
+
           <TabsContent value="settings">
             <ShopSettingsForm />
           </TabsContent>
