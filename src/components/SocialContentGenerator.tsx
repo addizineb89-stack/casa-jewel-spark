@@ -99,40 +99,49 @@ export default function SocialContentGenerator() {
   return (
     <Card className="w-full max-w-2xl mx-auto">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 font-display">
-          <Camera className="w-5 h-5 text-gold-500" />
-          Générateur de contenu social
+        <CardTitle className="flex items-center gap-2 font-display text-lg">
+          <Camera className="w-5 h-5" />
+          Créer mon post bijou
         </CardTitle>
+        <p className="text-sm text-muted-foreground">3 étapes simples → texte prêt pour Instagram, TikTok, WhatsApp</p>
       </CardHeader>
       <CardContent className="space-y-4">
 
-        {/* Zone photo */}
-        <div
-          onClick={() => fileRef.current?.click()}
-          className="border-2 border-dashed border-border rounded-lg p-6 text-center cursor-pointer hover:border-gold-400 transition-colors"
-        >
-          {preview ? (
-            <img src={preview} alt="bijou" className="max-h-48 mx-auto rounded-lg object-cover" />
-          ) : (
-            <div className="space-y-2">
-              <Camera className="w-10 h-10 mx-auto text-muted-foreground" />
-              <p className="text-sm text-muted-foreground">Cliquer pour prendre ou importer une photo</p>
-            </div>
-          )}
+        {/* Étape 1 */}
+        <div className="space-y-2">
+          <p className="text-sm font-semibold text-foreground">① Prends une photo de ton bijou</p>
+          <div
+            onClick={() => fileRef.current?.click()}
+            className="border-2 border-dashed border-border rounded-xl p-6 text-center cursor-pointer hover:border-amber-400 transition-colors bg-muted/30"
+          >
+            {preview ? (
+              <img src={preview} alt="bijou" className="max-h-52 mx-auto rounded-lg object-cover" />
+            ) : (
+              <div className="space-y-3">
+                <Camera className="w-12 h-12 mx-auto text-amber-500" />
+                <p className="text-base font-medium text-foreground">Appuyer ici pour prendre une photo</p>
+                <p className="text-xs text-muted-foreground">ou choisir depuis la galerie</p>
+              </div>
+            )}
+          </div>
+          <input ref={fileRef} type="file" accept="image/*" capture="environment" className="hidden" onChange={handlePhoto} />
         </div>
-        <input ref={fileRef} type="file" accept="image/*" capture="environment" className="hidden" onChange={handlePhoto} />
 
-        <Button
-          onClick={generate}
-          disabled={!preview || loading}
-          className="w-full gold-gradient text-primary-foreground"
-        >
-          {loading ? (
-            <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Analyse en cours...</>
-          ) : (
-            "✨ Générer le contenu"
-          )}
-        </Button>
+        {/* Étape 2 */}
+        <div className="space-y-2">
+          <p className="text-sm font-semibold text-foreground">② L'IA analyse et crée le texte</p>
+          <Button
+            onClick={generate}
+            disabled={!preview || loading}
+            className="w-full gold-gradient text-primary-foreground text-base py-6"
+          >
+            {loading ? (
+              <><Loader2 className="w-5 h-5 mr-2 animate-spin" /> Analyse en cours (15-30s)...</>
+            ) : (
+              "✨ Générer automatiquement"
+            )}
+          </Button>
+        </div>
 
         {/* Analyse bijou */}
         {analysis && (
