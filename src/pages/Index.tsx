@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
-import { BarChart3, Flame, Calculator, Camera, Crown } from "lucide-react";
-import { Link } from "react-router-dom";
+import { BarChart3, Flame, Calculator, Camera } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import GoldTicker from "@/components/GoldTicker";
 import DashboardHeader from "@/components/DashboardHeader";
