@@ -188,7 +188,7 @@ export const translations = {
   "pro.tab.shopSettings": { fr: "Paramètres Boutique", en: "Shop Settings", ar: "إعدادات المتجر" },
 
   // Top Scanned
-  "pro.topScanned": { fr: "Top Scannés à Casa", en: "Top Scanned in Casa", ar: "الأكثر مسحاً في كازا" },
+  "pro.topScanned": { fr: "Top Scannés au Maroc", en: "Top Scanned in Morocco", ar: "الأكثر مسحاً في المغرب" },
   "pro.topScannedSub": { fr: "Les 5 modèles les plus recherchés cette semaine", en: "Top 5 most searched models this week", ar: "أكثر 5 نماذج بحثاً هذا الأسبوع" },
   "pro.scans": { fr: "scans", en: "scans", ar: "مسح" },
 
