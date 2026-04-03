@@ -67,7 +67,7 @@ const ProDashboard = () => {
 
   const handleWhatsApp = () => {
     const lines = [
-      shopName || "Casa Gold",
+      shopName || "Aura Gold",
       "━━━━━━━━━━━━",
       t("quote.karat") + ": " + quoteKarat.toUpperCase(),
       t("quote.weight") + ": " + weight + "g",
