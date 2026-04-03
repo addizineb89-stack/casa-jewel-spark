@@ -34,9 +34,9 @@ const SOCIAL_HEATMAP = [
 ];
 
 const CUSTOMER_REQUESTS = [
-  { user: "Fatima Z.", location: "Maârif", request: "Bague Beldi 18K, taille 54", time: "2h" },
-  { user: "Youssef M.", location: "Derb Sultan", request: "Chaîne 60cm Cartier-style 21K", time: "4h" },
-  { user: "Salma R.", location: "Ain Diab", request: "Bracelet torsadé pour mariage", time: "6h" },
+  { user: "Fatima Z.", location: "Casablanca", request: "Bague Beldi 18K, taille 54", time: "2h" },
+  { user: "Youssef M.", location: "Marrakech", request: "Chaîne 60cm Cartier-style 21K", time: "4h" },
+  { user: "Salma R.", location: "Rabat", request: "Bracelet torsadé pour mariage", time: "6h" },
 ];
 
 const PRICE_HISTORY = Array.from({ length: 30 }, (_, i) => ({

@@ -271,7 +271,7 @@ const QuotationGenerator = () => {
                   )}
                   <div>
                     <p className="font-display font-bold text-foreground">{shopName}</p>
-                    <p className="text-xs text-muted-foreground font-body">Casablanca</p>
+                    <p className="text-xs text-muted-foreground font-body">Maroc</p>
                   </div>
                 </div>
                 <Badge className="gold-gradient text-primary-foreground border-0 text-xs">
