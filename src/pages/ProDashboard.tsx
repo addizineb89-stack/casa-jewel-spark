@@ -313,7 +313,7 @@ const ProDashboard = () => {
                   {weight > 0 && (
                     <div className="bg-secondary/50 rounded-lg p-4 space-y-2">
                       <p className="text-xs text-muted-foreground font-body">{t("pro.quotePreview")}</p>
-                      <p className="font-display font-bold text-lg gold-text">{shopName || "Casa Gold"}</p>
+                      <p className="font-display font-bold text-lg gold-text">{shopName || "Aura Gold"}</p>
                       <div className="grid grid-cols-2 gap-1 text-sm font-body">
                         <span className="text-muted-foreground">{t("pricing.goldCost")}:</span>
                         <span className="text-foreground font-medium">{goldCost.toFixed(0)} MAD</span>

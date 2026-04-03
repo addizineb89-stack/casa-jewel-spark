@@ -232,7 +232,7 @@ export const translations = {
   "pro.settings.whatsappPlaceholder": { fr: "+212 6XX XXX XXX", en: "+212 6XX XXX XXX", ar: "+212 6XX XXX XXX" },
   "pro.settings.whatsappDesc": { fr: "Pour recevoir les demandes clients", en: "To receive customer requests", ar: "لاستقبال طلبات الزبائن" },
   "pro.settings.address": { fr: "Adresse", en: "Address", ar: "العنوان" },
-  "pro.settings.addressPlaceholder": { fr: "ex: 45 Rue des Bijoutiers, Derb Sultan, Casablanca", en: "e.g.: 45 Rue des Bijoutiers, Derb Sultan, Casablanca", ar: "مثال: 45 شارع الصاغة، درب السلطان، الدار البيضاء" },
+  "pro.settings.addressPlaceholder": { fr: "ex: 45 Rue des Bijoutiers, Derb Sultan", en: "e.g.: 45 Rue des Bijoutiers, Derb Sultan", ar: "مثال: 45 شارع الصاغة، درب السلطان" },
   "pro.settings.defaultLabor": { fr: "Prix main d'œuvre par défaut", en: "Default Labor Cost", ar: "تكلفة العمل الافتراضية" },
   "pro.settings.defaultLaborPlaceholder": { fr: "ex: 150", en: "e.g.: 150", ar: "مثال: 150" },
   "pro.settings.defaultLaborDesc": { fr: "Façon par défaut en MAD, appliquée automatiquement aux devis", en: "Default façon in MAD, auto-applied to quotes", ar: "تكلفة الصنعة الافتراضية بالدرهم، تُطبّق تلقائياً على العروض" },

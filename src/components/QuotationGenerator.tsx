@@ -38,7 +38,7 @@ const QuotationGenerator = () => {
   const [showPreview, setShowPreview] = useState(false);
 
   // Read shop settings from localStorage (shared with ShopSettingsForm in future)
-  const shopName = "Casa Gold";
+  const shopName = "Aura Gold";
   const shopLogo: string | null = null;
 
   const weightNum = parseFloat(weight) || 0;

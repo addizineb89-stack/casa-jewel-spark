@@ -20,7 +20,7 @@ const styleDistribution = [
 const topCommented = [
   { model: "Bracelet Twisté Beldi", comments: 847, platform: "Instagram", trend: "up" },
   { model: "Sautoir Baroque Moderne", comments: 623, platform: "TikTok", trend: "up" },
-  { model: "Bague Émeraude Casa", comments: 512, platform: "Instagram", trend: "down" },
+  { model: "Bague Émeraude Maroc", comments: 512, platform: "Instagram", trend: "down" },
   { model: "Créoles XXL Doré", comments: 489, platform: "TikTok", trend: "up" },
   { model: "Chaîne Figaro 18K", comments: 445, platform: "Instagram", trend: "up" },
 ];
