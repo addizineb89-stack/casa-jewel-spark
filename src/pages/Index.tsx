@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
-import { BarChart3, Flame, Calculator, Camera, Crown } from "lucide-react";
-import { Link } from "react-router-dom";
+import { BarChart3, Flame, Calculator, Camera } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import GoldTicker from "@/components/GoldTicker";
 import DashboardHeader from "@/components/DashboardHeader";
@@ -72,15 +71,8 @@ const Index = () => {
           </TabsContent>
         </Tabs>
 
-        {/* Emergency Access to Pro Dashboard */}
-        <div className="mt-8 text-center">
-          <Link
-            to="/pro"
-            className="inline-flex items-center gap-2 gold-gradient text-primary-foreground px-6 py-3 rounded-lg font-body font-semibold hover:opacity-90 transition-opacity gold-glow"
-          >
-            <Crown className="w-5 h-5" /> Accéder au Dashboard Pro
-          </Link>
-        </div>
+        {/* Bottom padding for mobile nav */}
+        <div className="h-16 md:hidden" />
       </main>
     </div>
   );
