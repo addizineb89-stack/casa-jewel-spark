@@ -162,9 +162,14 @@ const Subscription = () => {
                       <span>{f.label}</span>
                     </div>
                   ))}
-                  <button className="w-full mt-4 gold-gradient text-primary-foreground py-3 rounded-lg font-body font-semibold hover:opacity-90 transition-opacity gold-glow text-base">
+                  <a
+                    href={`https://wa.me/212600000000?text=${encodeURIComponent("Bonjour, je souhaite m'abonner au plan Pro Partner (499 DH/mois).")}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block w-full mt-4 gold-gradient text-primary-foreground py-3 rounded-lg font-body font-semibold hover:opacity-90 transition-opacity gold-glow text-base text-center"
+                  >
                     {t("sub.choosePlan")}
-                  </button>
+                  </a>
                 </CardContent>
               </Card>
             </motion.div>
