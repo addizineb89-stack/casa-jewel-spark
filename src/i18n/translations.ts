@@ -3,14 +3,14 @@ export type Language = "fr" | "en" | "ar";
 export const translations = {
   // Header
   "app.title": {
-    fr: "Casa Gold Intelligence",
-    en: "Casa Gold Intelligence",
-    ar: "كازا غولد إنتليجنس",
+    fr: "Aura Gold Intelligence",
+    en: "Aura Gold Intelligence",
+    ar: "أورا غولد إنتليجنس",
   },
   "app.subtitle": {
-    fr: "Tableau de bord professionnel — Casablanca",
-    en: "Professional Dashboard — Casablanca",
-    ar: "لوحة القيادة المهنية — الدار البيضاء",
+    fr: "Tableau de bord professionnel — Maroc",
+    en: "Professional Dashboard — Morocco",
+    ar: "لوحة القيادة المهنية — المغرب",
   },
   "header.search": {
     fr: "Rechercher un modèle...",
@@ -69,7 +69,7 @@ export const translations = {
   "pricing.copied": { fr: "Prix copié !", en: "Price copied!", ar: "!تم نسخ السعر" },
 
   // WhatsApp quote
-  "quote.title": { fr: "Devis Casa Gold", en: "Casa Gold Quote", ar: "عرض كازا غولد" },
+  "quote.title": { fr: "Devis Aura Gold", en: "Aura Gold Quote", ar: "عرض أورا غولد" },
   "quote.karat": { fr: "Caratage", en: "Karat", ar: "العيار" },
   "quote.weight": { fr: "Poids", en: "Weight", ar: "الوزن" },
   "quote.gold": { fr: "Or", en: "Gold", ar: "ذهب" },
@@ -123,9 +123,9 @@ export const translations = {
   "sub.recommended": { fr: "Recommandé", en: "Recommended", ar: "موصى به" },
   "sub.pro": { fr: "Professionnel", en: "Professional", ar: "محترف" },
   "sub.socialProof": {
-    fr: "Approuvé par 50+ bijoutiers à Derb Sultan & Maârif",
-    en: "Trusted by 50+ Jewelers in Derb Sultan & Maârif",
-    ar: "موثوق من طرف أكثر من 50 صائغ في درب السلطان والمعاريف",
+    fr: "Approuvé par 50+ bijoutiers au Maroc",
+    en: "Trusted by 50+ Jewelers across Morocco",
+    ar: "موثوق من طرف أكثر من 50 صائغ في المغرب",
   },
   "sub.clientFree.name": { fr: "Découverte", en: "Discovery", ar: "اكتشاف" },
   "sub.clientFree.desc": { fr: "L'essentiel pour explorer", en: "The essentials to explore", ar: "الأساسيات للاستكشاف" },
@@ -135,11 +135,11 @@ export const translations = {
     en: "Full access to gold intelligence",
     ar: "وصول كامل إلى الذكاء الذهبي",
   },
-  "sub.proplan.name": { fr: "Le Partenaire Casa Gold", en: "Casa Gold Partner", ar: "شريك كازا غولد" },
+  "sub.proplan.name": { fr: "Le Partenaire Aura Gold", en: "Aura Gold Partner", ar: "شريك أورا غولد" },
   "sub.proplan.tagline": {
-    fr: "Dominez le marché de Casablanca",
-    en: "Dominate the Casablanca market",
-    ar: "تصدّر سوق الدار البيضاء",
+    fr: "Dominez le marché marocain",
+    en: "Dominate the Moroccan market",
+    ar: "تصدّر السوق المغربي",
   },
   "sub.feat.visualFree": { fr: "3 recherches visuelles / jour", en: "3 visual searches / day", ar: "3 عمليات بحث بصري / يوم" },
   "sub.feat.livePrice": { fr: "Prix de l'or en direct", en: "Live Gold Price", ar: "سعر الذهب مباشر" },
@@ -149,9 +149,9 @@ export const translations = {
   "sub.feat.zakatCalc": { fr: "Calculateur Zakat détaillé", en: "Detailed Zakat Calculator", ar: "حاسبة زكاة مفصّلة" },
   "sub.feat.scanHistory": { fr: "Historique des bijoux scannés", en: "History of scanned jewelry", ar: "سجل المجوهرات الممسوحة" },
   "sub.feat.fullInsights": {
-    fr: "Insights marché complets (tendances de scan à Casa)",
-    en: "Full Market Insights (what people scan in Casa)",
-    ar: "تحليل شامل للسوق (ما يبحث عنه الناس في كازا)",
+    fr: "Insights marché complets (tendances de scan au Maroc)",
+    en: "Full Market Insights (what people scan in Morocco)",
+    ar: "تحليل شامل للسوق (ما يبحث عنه الناس في المغرب)",
   },
   "sub.feat.whatsappLogo": {
     fr: "Devis WhatsApp avec votre logo boutique",
@@ -188,7 +188,7 @@ export const translations = {
   "pro.tab.shopSettings": { fr: "Paramètres Boutique", en: "Shop Settings", ar: "إعدادات المتجر" },
 
   // Top Scanned
-  "pro.topScanned": { fr: "Top Scannés à Casa", en: "Top Scanned in Casa", ar: "الأكثر مسحاً في كازا" },
+  "pro.topScanned": { fr: "Top Scannés au Maroc", en: "Top Scanned in Morocco", ar: "الأكثر مسحاً في المغرب" },
   "pro.topScannedSub": { fr: "Les 5 modèles les plus recherchés cette semaine", en: "Top 5 most searched models this week", ar: "أكثر 5 نماذج بحثاً هذا الأسبوع" },
   "pro.scans": { fr: "scans", en: "scans", ar: "مسح" },
 
@@ -232,7 +232,7 @@ export const translations = {
   "pro.settings.whatsappPlaceholder": { fr: "+212 6XX XXX XXX", en: "+212 6XX XXX XXX", ar: "+212 6XX XXX XXX" },
   "pro.settings.whatsappDesc": { fr: "Pour recevoir les demandes clients", en: "To receive customer requests", ar: "لاستقبال طلبات الزبائن" },
   "pro.settings.address": { fr: "Adresse", en: "Address", ar: "العنوان" },
-  "pro.settings.addressPlaceholder": { fr: "ex: 45 Rue des Bijoutiers, Derb Sultan, Casablanca", en: "e.g.: 45 Rue des Bijoutiers, Derb Sultan, Casablanca", ar: "مثال: 45 شارع الصاغة، درب السلطان، الدار البيضاء" },
+  "pro.settings.addressPlaceholder": { fr: "ex: 45 Rue des Bijoutiers, Derb Sultan", en: "e.g.: 45 Rue des Bijoutiers, Derb Sultan", ar: "مثال: 45 شارع الصاغة، درب السلطان" },
   "pro.settings.defaultLabor": { fr: "Prix main d'œuvre par défaut", en: "Default Labor Cost", ar: "تكلفة العمل الافتراضية" },
   "pro.settings.defaultLaborPlaceholder": { fr: "ex: 150", en: "e.g.: 150", ar: "مثال: 150" },
   "pro.settings.defaultLaborDesc": { fr: "Façon par défaut en MAD, appliquée automatiquement aux devis", en: "Default façon in MAD, auto-applied to quotes", ar: "تكلفة الصنعة الافتراضية بالدرهم، تُطبّق تلقائياً على العروض" },

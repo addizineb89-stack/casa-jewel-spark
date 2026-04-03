@@ -38,7 +38,7 @@ const QuotationGenerator = () => {
   const [showPreview, setShowPreview] = useState(false);
 
   // Read shop settings from localStorage (shared with ShopSettingsForm in future)
-  const shopName = "Casa Gold";
+  const shopName = "Aura Gold";
   const shopLogo: string | null = null;
 
   const weightNum = parseFloat(weight) || 0;
@@ -271,7 +271,7 @@ const QuotationGenerator = () => {
                   )}
                   <div>
                     <p className="font-display font-bold text-foreground">{shopName}</p>
-                    <p className="text-xs text-muted-foreground font-body">Casablanca</p>
+                    <p className="text-xs text-muted-foreground font-body">Maroc</p>
                   </div>
                 </div>
                 <Badge className="gold-gradient text-primary-foreground border-0 text-xs">

@@ -34,9 +34,9 @@ const SOCIAL_HEATMAP = [
 ];
 
 const CUSTOMER_REQUESTS = [
-  { user: "Fatima Z.", location: "Maârif", request: "Bague Beldi 18K, taille 54", time: "2h" },
-  { user: "Youssef M.", location: "Derb Sultan", request: "Chaîne 60cm Cartier-style 21K", time: "4h" },
-  { user: "Salma R.", location: "Ain Diab", request: "Bracelet torsadé pour mariage", time: "6h" },
+  { user: "Fatima Z.", location: "Casablanca", request: "Bague Beldi 18K, taille 54", time: "2h" },
+  { user: "Youssef M.", location: "Marrakech", request: "Chaîne 60cm Cartier-style 21K", time: "4h" },
+  { user: "Salma R.", location: "Rabat", request: "Bracelet torsadé pour mariage", time: "6h" },
 ];
 
 const PRICE_HISTORY = Array.from({ length: 30 }, (_, i) => ({
@@ -67,7 +67,7 @@ const ProDashboard = () => {
 
   const handleWhatsApp = () => {
     const lines = [
-      shopName || "Casa Gold",
+      shopName || "Aura Gold",
       "━━━━━━━━━━━━",
       t("quote.karat") + ": " + quoteKarat.toUpperCase(),
       t("quote.weight") + ": " + weight + "g",
@@ -313,7 +313,7 @@ const ProDashboard = () => {
                   {weight > 0 && (
                     <div className="bg-secondary/50 rounded-lg p-4 space-y-2">
                       <p className="text-xs text-muted-foreground font-body">{t("pro.quotePreview")}</p>
-                      <p className="font-display font-bold text-lg gold-text">{shopName || "Casa Gold"}</p>
+                      <p className="font-display font-bold text-lg gold-text">{shopName || "Aura Gold"}</p>
                       <div className="grid grid-cols-2 gap-1 text-sm font-body">
                         <span className="text-muted-foreground">{t("pricing.goldCost")}:</span>
                         <span className="text-foreground font-medium">{goldCost.toFixed(0)} MAD</span>
