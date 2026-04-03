@@ -37,6 +37,10 @@ const CUSTOMER_REQUESTS = [
   { user: "Fatima Z.", location: "Casablanca", request: "Bague Beldi 18K, taille 54", time: "2h" },
   { user: "Youssef M.", location: "Marrakech", request: "Chaîne 60cm Cartier-style 21K", time: "4h" },
   { user: "Salma R.", location: "Rabat", request: "Bracelet torsadé pour mariage", time: "6h" },
+  { user: "Karim B.", location: "Fès", request: "Sautoir Beldi 18K pour fiançailles", time: "8h" },
+  { user: "Nadia L.", location: "Tanger", request: "Boucles créoles 21K, modèle XL", time: "10h" },
+  { user: "Hassan E.", location: "Agadir", request: "Gourmette homme 18K, 25g", time: "12h" },
+  { user: "Amina T.", location: "Oujda", request: "Parure complète 21K pour mariage", time: "1j" },
 ];
 
 const PRICE_HISTORY = Array.from({ length: 30 }, (_, i) => ({
