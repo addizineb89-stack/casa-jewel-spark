@@ -129,9 +129,14 @@ const Subscription = () => {
                       <span>{f.label}</span>
                     </div>
                   ))}
-                  <button className="w-full mt-4 gold-gradient text-primary-foreground py-2.5 rounded-lg font-body font-medium hover:opacity-90 transition-opacity gold-glow">
+                  <a
+                    href={`https://wa.me/212600000000?text=${encodeURIComponent("Bonjour, je souhaite m'abonner au plan Aura Gold (99 DH/mois).")}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block w-full mt-4 gold-gradient text-primary-foreground py-2.5 rounded-lg font-body font-medium hover:opacity-90 transition-opacity gold-glow text-center"
+                  >
                     {t("sub.choosePlan")}
-                  </button>
+                  </a>
                 </CardContent>
               </Card>
             </motion.div>
