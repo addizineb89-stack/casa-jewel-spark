@@ -1,0 +1,9 @@
+{
+  "name": "Maroc Gold Intelligence",
+  "short_name": "Maroc Gold",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#bf8c2c",
+  "background_color": "#f7f3eb",
+  "icons": []
+}
