@@ -3,14 +3,14 @@ export type Language = "fr" | "en" | "ar";
 export const translations = {
   // Header
   "app.title": {
-    fr: "Casa Gold Intelligence",
-    en: "Casa Gold Intelligence",
-    ar: "كازا غولد إنتليجنس",
+    fr: "Aura Gold Intelligence",
+    en: "Aura Gold Intelligence",
+    ar: "أورا غولد إنتليجنس",
   },
   "app.subtitle": {
-    fr: "Tableau de bord professionnel — Casablanca",
-    en: "Professional Dashboard — Casablanca",
-    ar: "لوحة القيادة المهنية — الدار البيضاء",
+    fr: "Tableau de bord professionnel — Maroc",
+    en: "Professional Dashboard — Morocco",
+    ar: "لوحة القيادة المهنية — المغرب",
   },
   "header.search": {
     fr: "Rechercher un modèle...",
