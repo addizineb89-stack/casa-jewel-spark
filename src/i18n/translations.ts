@@ -69,7 +69,7 @@ export const translations = {
   "pricing.copied": { fr: "Prix copié !", en: "Price copied!", ar: "!تم نسخ السعر" },
 
   // WhatsApp quote
-  "quote.title": { fr: "Devis Casa Gold", en: "Casa Gold Quote", ar: "عرض كازا غولد" },
+  "quote.title": { fr: "Devis Aura Gold", en: "Aura Gold Quote", ar: "عرض أورا غولد" },
   "quote.karat": { fr: "Caratage", en: "Karat", ar: "العيار" },
   "quote.weight": { fr: "Poids", en: "Weight", ar: "الوزن" },
   "quote.gold": { fr: "Or", en: "Gold", ar: "ذهب" },
