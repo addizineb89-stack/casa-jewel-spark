@@ -169,8 +169,11 @@ const TrendGrid = () => {
             </div>
             <div className="p-4 relative z-10">
               <h4 className="font-display font-semibold text-foreground line-clamp-2 text-sm">
-                {item.description || "Bijou tendance"}
+                {item.description || (item as any).content || "Bijou tendance"}
               </h4>
+              {(item as any).username && (
+                <p className="text-xs text-muted-foreground font-body mt-1">@{(item as any).username}</p>
+              )}
               <div className="flex items-center gap-3 mt-2 text-sm text-muted-foreground font-body">
                 <span className="flex items-center gap-1">
                   <Heart className="w-3.5 h-3.5 text-gold" /> {formatLikes(item.likes)}
