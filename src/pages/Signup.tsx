@@ -24,10 +24,10 @@ const Signup = () => {
     setLoading(true);
     try {
       await signup({ name, email, phone, password, role, ...(role === "jeweler" ? { shopName } : {}) });
-      toast({ title: "Compte créé avec succès !" });
+      toast({ title: "Compte créé !", description: "Vérifiez votre email pour confirmer votre compte." });
       navigate("/welcome");
-    } catch {
-      toast({ title: "Erreur", variant: "destructive" });
+    } catch (err: any) {
+      toast({ title: "Erreur", description: err?.message || "Impossible de créer le compte", variant: "destructive" });
     } finally {
       setLoading(false);
     }

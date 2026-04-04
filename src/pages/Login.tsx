@@ -22,8 +22,8 @@ const Login = () => {
       await login(email, password);
       toast({ title: "Bienvenue !" });
       navigate("/");
-    } catch {
-      toast({ title: "Erreur de connexion", variant: "destructive" });
+    } catch (err: any) {
+      toast({ title: "Erreur de connexion", description: err?.message || "Email ou mot de passe incorrect", variant: "destructive" });
     } finally {
       setLoading(false);
     }
