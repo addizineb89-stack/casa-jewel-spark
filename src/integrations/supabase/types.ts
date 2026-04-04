@@ -14,6 +14,54 @@ export type Database = {
   }
   public: {
     Tables: {
+      jewelry_items: {
+        Row: {
+          comments: number | null
+          created_at: string
+          description: string | null
+          estimated_price_mad: number | null
+          id: string
+          image_url: string
+          likes: number | null
+          platform: string
+          scraped_at: string
+          source_url: string | null
+          style: string
+          type: string | null
+          viral_score: number | null
+        }
+        Insert: {
+          comments?: number | null
+          created_at?: string
+          description?: string | null
+          estimated_price_mad?: number | null
+          id?: string
+          image_url: string
+          likes?: number | null
+          platform?: string
+          scraped_at?: string
+          source_url?: string | null
+          style?: string
+          type?: string | null
+          viral_score?: number | null
+        }
+        Update: {
+          comments?: number | null
+          created_at?: string
+          description?: string | null
+          estimated_price_mad?: number | null
+          id?: string
+          image_url?: string
+          likes?: number | null
+          platform?: string
+          scraped_at?: string
+          source_url?: string | null
+          style?: string
+          type?: string | null
+          viral_score?: number | null
+        }
+        Relationships: []
+      }
       subscriptions: {
         Row: {
           created_at: string
