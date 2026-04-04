@@ -16,6 +16,7 @@ const ProDashboard = React.lazy(() => import("./pages/ProDashboard"));
 const Login = React.lazy(() => import("./pages/Login"));
 const Signup = React.lazy(() => import("./pages/Signup"));
 const Welcome = React.lazy(() => import("./pages/Welcome"));
+const Admin = React.lazy(() => import("./pages/Admin"));
 const NotFound = React.lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
