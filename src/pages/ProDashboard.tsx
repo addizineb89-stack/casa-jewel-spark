@@ -55,7 +55,7 @@ const ProDashboard = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
   const { prices: GOLD_PRICES } = useGoldPrices();
-  const GOLD_TRENDS: Record<string, number> = { "18k": 1.2, "21k": 0.8, "24k": 1.5 };
+  const GOLD_TRENDS: Record<string, number> = { "18k": 0.89, "21k": 0.75, "24k": 1.10 };
   const [shopName, setShopName] = useState("");
   const [quoteWeight, setQuoteWeight] = useState("");
   const [quoteLabor, setQuoteLabor] = useState("");
