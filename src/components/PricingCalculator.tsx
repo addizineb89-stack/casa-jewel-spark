@@ -52,8 +52,8 @@ const PricingCalculator = () => {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                {Object.keys(GOLD_PRICES).map((k) => (
-                  <SelectItem key={k} value={k}>{k.toUpperCase()} — {GOLD_PRICES[k].toFixed(2)} MAD/g</SelectItem>
+                {(['9k', '14k', '18k', '21k', '22k', '24k'] as const).map((k) => (
+                  <SelectItem key={k} value={k}>{k.toUpperCase()} — {(GOLD_PRICES[k] as number).toFixed(2)} MAD/g</SelectItem>
                 ))}
               </SelectContent>
             </Select>

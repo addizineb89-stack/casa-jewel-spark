@@ -1,10 +1,18 @@
-import { TrendingUp } from "lucide-react";
+import { TrendingUp, Clock } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { useGoldPrices } from "@/hooks/useGoldPrices";
 
+function timeAgo(dateStr: string): string {
+  const diff = Math.floor((Date.now() - new Date(dateStr).getTime()) / 1000);
+  if (diff < 60) return "à l'instant";
+  if (diff < 3600) return `il y a ${Math.floor(diff / 60)} min`;
+  if (diff < 86400) return `il y a ${Math.floor(diff / 3600)}h`;
+  return `il y a ${Math.floor(diff / 86400)}j`;
+}
+
 const GoldTicker = () => {
   const { t } = useLanguage();
-  const { prices } = useGoldPrices();
+  const { prices, loading } = useGoldPrices();
 
   const PriceItem = ({ label, price }: { label: string; price: number }) => (
     <div className="flex items-center gap-3 px-6">
@@ -25,11 +33,22 @@ const GoldTicker = () => {
         <div className="flex items-center gap-2 px-4 border-e border-primary-foreground/20">
           <div className="w-2 h-2 rounded-full bg-green-400 pulse-gold" />
           <span className="text-primary-foreground/80 text-xs font-body font-semibold uppercase tracking-wider">{t("ticker.live")}</span>
+          {prices.updatedAt && (
+            <span className="flex items-center gap-1 text-primary-foreground/50 text-xs font-body">
+              <Clock className="w-3 h-3" />
+              {timeAgo(prices.updatedAt)}
+            </span>
+          )}
         </div>
         <div className="flex items-center gap-2 px-4 border-e border-primary-foreground/20">
           <span className="text-primary-foreground/60 text-xs font-body">{t("ticker.goldPrice")}</span>
         </div>
-        <div className="ticker-scroll flex items-center whitespace-nowrap">
+        {loading ? (
+          <div className="flex items-center px-6">
+            <span className="text-primary-foreground/60 text-sm font-body animate-pulse">Chargement des prix...</span>
+          </div>
+        ) : null}
+        <div className={`ticker-scroll flex items-center whitespace-nowrap ${loading ? 'opacity-50' : ''}`}>
           <PriceItem label="Or 9K"  price={prices['9k']}  />
           <span className="text-primary-foreground/30 mx-2">•</span>
           <PriceItem label="Or 14K" price={prices['14k']} />
