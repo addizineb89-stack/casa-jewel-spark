@@ -1,10 +1,18 @@
-import { TrendingUp } from "lucide-react";
+import { TrendingUp, Clock } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { useGoldPrices } from "@/hooks/useGoldPrices";
 
+function timeAgo(dateStr: string): string {
+  const diff = Math.floor((Date.now() - new Date(dateStr).getTime()) / 1000);
+  if (diff < 60) return "à l'instant";
+  if (diff < 3600) return `il y a ${Math.floor(diff / 60)} min`;
+  if (diff < 86400) return `il y a ${Math.floor(diff / 3600)}h`;
+  return `il y a ${Math.floor(diff / 86400)}j`;
+}
+
 const GoldTicker = () => {
   const { t } = useLanguage();
-  const { prices } = useGoldPrices();
+  const { prices, loading } = useGoldPrices();
 
   const PriceItem = ({ label, price }: { label: string; price: number }) => (
     <div className="flex items-center gap-3 px-6">
