@@ -119,8 +119,8 @@ const TrendGrid = () => {
             <div className="zellige-card" />
             <div className="relative aspect-square overflow-hidden">
               <img
-                src={item.image_url}
-                alt={item.description || "Bijou tendance"}
+                src={item.image_url || (item as any).thumbnail || PLACEHOLDER_IMG}
+                alt={item.description || (item as any).content || "Bijou tendance"}
                 loading="lazy"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 onError={(e) => { (e.target as HTMLImageElement).src = PLACEHOLDER_IMG; }}
