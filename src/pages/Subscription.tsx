@@ -1,17 +1,25 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Diamond, ArrowLeft, Check, Gem, Search, Bell, History, Calculator, BarChart3, MessageSquare, MapPin, Globe } from "lucide-react";
+import { Diamond, ArrowLeft, Gem, Search, Bell, History, Calculator, BarChart3, MessageSquare, MapPin, Globe, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { useNavigate } from "react-router-dom";
 import DashboardHeader from "@/components/DashboardHeader";
+import PaymentDialog from "@/components/PaymentDialog";
 
 const Subscription = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
   const [mode, setMode] = useState<"client" | "pro">("client");
+  const [paymentOpen, setPaymentOpen] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState({ name: "", price: 0 });
+
+  const openPayment = (name: string, price: number) => {
+    setSelectedPlan({ name, price });
+    setPaymentOpen(true);
+  };
 
   const clientFreeFeatures = [
     { icon: Search, label: t("sub.feat.visualFree") },
@@ -104,7 +112,9 @@ const Subscription = () => {
                       <span>{f.label}</span>
                     </div>
                   ))}
-                  <Button variant="outline" className="w-full mt-4 border-border">{t("sub.currentPlan")}</Button>
+                  <Button variant="outline" disabled className="w-full mt-4 border-border opacity-60">
+                    Plan actuel ✓
+                  </Button>
                 </CardContent>
               </Card>
             </motion.div>
@@ -114,7 +124,10 @@ const Subscription = () => {
               <Card className="relative overflow-hidden border-gold/30 gold-glow h-full">
                 <div className="zellige-card" />
                 <CardHeader className="relative">
-                  <Badge className="w-fit gold-gradient text-primary-foreground border-0 mb-2">{t("sub.recommended")}</Badge>
+                  <div className="flex gap-2 mb-2">
+                    <Badge className="w-fit gold-gradient text-primary-foreground border-0">{t("sub.recommended")}</Badge>
+                    <Badge variant="outline" className="w-fit border-gold/40 text-gold text-xs">Essai gratuit 7 jours</Badge>
+                  </div>
                   <CardTitle className="font-display text-xl gold-text">{t("sub.clientPremium.name")}</CardTitle>
                   <CardDescription className="font-body">{t("sub.clientPremium.desc")}</CardDescription>
                   <div className="mt-4">
@@ -129,14 +142,12 @@ const Subscription = () => {
                       <span>{f.label}</span>
                     </div>
                   ))}
-                  <a
-                    href={`https://wa.me/212600000000?text=${encodeURIComponent("Bonjour, je souhaite m'abonner au plan Aura Gold (99 DH/mois).")}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <button
+                    onClick={() => openPayment("L'Expérience Aura", 99)}
                     className="block w-full mt-4 gold-gradient text-primary-foreground py-2.5 rounded-lg font-body font-medium hover:opacity-90 transition-opacity gold-glow text-center"
                   >
                     {t("sub.choosePlan")}
-                  </a>
+                  </button>
                 </CardContent>
               </Card>
             </motion.div>
@@ -162,14 +173,12 @@ const Subscription = () => {
                       <span>{f.label}</span>
                     </div>
                   ))}
-                  <a
-                    href={`https://wa.me/212600000000?text=${encodeURIComponent("Bonjour, je souhaite m'abonner au plan Pro Partner (499 DH/mois).")}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <button
+                    onClick={() => openPayment("Pro Partner", 499)}
                     className="block w-full mt-4 gold-gradient text-primary-foreground py-3 rounded-lg font-body font-semibold hover:opacity-90 transition-opacity gold-glow text-base text-center"
                   >
                     {t("sub.choosePlan")}
-                  </a>
+                  </button>
                 </CardContent>
               </Card>
             </motion.div>
@@ -184,11 +193,18 @@ const Subscription = () => {
           className="mt-10 text-center"
         >
           <Badge variant="secondary" className="px-4 py-2 text-sm font-body bg-card border border-border">
-            <Gem className="w-4 h-4 me-2 text-gold inline-block" />
-            {t("sub.socialProof")}
+            <Heart className="w-4 h-4 me-2 text-gold inline-block" />
+            Lancé avec ❤️ à Casablanca pour les bijoutiers marocains
           </Badge>
         </motion.div>
       </main>
+
+      <PaymentDialog
+        open={paymentOpen}
+        onOpenChange={setPaymentOpen}
+        planName={selectedPlan.name}
+        planPrice={selectedPlan.price}
+      />
     </div>
   );
 };
