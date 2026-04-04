@@ -16,6 +16,7 @@ const ProDashboard = React.lazy(() => import("./pages/ProDashboard"));
 const Login = React.lazy(() => import("./pages/Login"));
 const Signup = React.lazy(() => import("./pages/Signup"));
 const Welcome = React.lazy(() => import("./pages/Welcome"));
+const Admin = React.lazy(() => import("./pages/Admin"));
 const NotFound = React.lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -42,6 +43,7 @@ const App = () => (
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/welcome" element={<Welcome />} />
+                <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
