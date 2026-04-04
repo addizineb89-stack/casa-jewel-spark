@@ -1,7 +1,7 @@
 import { useState } from "react";
 import {
-  ArrowLeft, TrendingUp, TrendingDown, Eye, MessageSquare,
-  Flame, Settings, FileText, Globe, Search, Crown, Send, Phone
+  ArrowLeft, TrendingUp, Eye, MessageSquare,
+  Flame, Settings, FileText, Globe, Search, Crown, Send, Phone, BarChart3
 } from "lucide-react";
 import ShopSettingsForm from "@/components/ShopSettingsForm";
 import QuotationGenerator from "@/components/QuotationGenerator";
@@ -9,82 +9,17 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { useNavigate } from "react-router-dom";
 import DashboardHeader from "@/components/DashboardHeader";
 import { useGoldPrices } from "@/hooks/useGoldPrices";
 import SocialContentGenerator from "@/components/SocialContentGenerator";
 
-const TOP_SCANNED = [
-  { name: "Bague Beldi Fassi", scans: 342, trend: 18 },
-  { name: "Chaîne Cartier-Style", scans: 287, trend: 12 },
-  { name: "Bracelet Torsadé 21K", scans: 231, trend: -3 },
-  { name: "Boucles Créoles Or", scans: 198, trend: 25 },
-  { name: "Collier Ras-de-cou", scans: 176, trend: 9 },
-];
-
-const SOCIAL_HEATMAP = [
-  { style: "Chaîne de cheville", mentions: 4200 },
-  { style: "Bague Beldi", mentions: 3800 },
-  { style: "Bracelet Cartier", mentions: 3100 },
-  { style: "Collier Layering", mentions: 2700 },
-  { style: "Créoles XL", mentions: 2400 },
-];
-
-const CUSTOMER_REQUESTS = [
-  { user: "Fatima Z.", location: "Casablanca", request: "Bague Beldi 18K, taille 54", time: "2h" },
-  { user: "Youssef M.", location: "Marrakech", request: "Chaîne 60cm Cartier-style 21K", time: "4h" },
-  { user: "Salma R.", location: "Rabat", request: "Bracelet torsadé pour mariage", time: "6h" },
-  { user: "Karim B.", location: "Fès", request: "Sautoir Beldi 18K pour fiançailles", time: "8h" },
-  { user: "Nadia L.", location: "Tanger", request: "Boucles créoles 21K, modèle XL", time: "10h" },
-  { user: "Hassan E.", location: "Agadir", request: "Gourmette homme 18K, 25g", time: "12h" },
-  { user: "Amina T.", location: "Oujda", request: "Parure complète 21K pour mariage", time: "1j" },
-];
-
-const PRICE_HISTORY = Array.from({ length: 30 }, (_, i) => ({
-  day: i + 1,
-  gold18k: Math.round(1070 + Math.sin(i / 4) * 30 + i * 0.8),
-  gold24k: Math.round(1400 + Math.sin(i / 3) * 40 + i * 1.2),
-}));
-
-const maxPrice = Math.max(...PRICE_HISTORY.map((d) => d.gold24k));
-
 const ProDashboard = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
   const { prices: GOLD_PRICES } = useGoldPrices();
-  const GOLD_TRENDS: Record<string, number> = { "18k": 0.89, "21k": 0.75, "24k": 1.10 };
-  const [shopName, setShopName] = useState("");
-  const [quoteWeight, setQuoteWeight] = useState("");
-  const [quoteLabor, setQuoteLabor] = useState("");
-  const [quoteProfit, setQuoteProfit] = useState("");
-  const [quoteKarat, setQuoteKarat] = useState("18k");
-
-  const weight = parseFloat(quoteWeight) || 0;
-  const labor = parseFloat(quoteLabor) || 0;
-  const profitPct = parseFloat(quoteProfit) || 0;
-  const goldCost = weight * ((GOLD_PRICES[quoteKarat as keyof typeof GOLD_PRICES] as number) || 523);
-  const profitAmount = (goldCost + labor) * (profitPct / 100);
-  const totalQuote = goldCost + labor + profitAmount;
-
-  const handleWhatsApp = () => {
-    const lines = [
-      shopName || "Aura Gold",
-      "━━━━━━━━━━━━",
-      t("quote.karat") + ": " + quoteKarat.toUpperCase(),
-      t("quote.weight") + ": " + weight + "g",
-      t("quote.gold") + ": " + goldCost.toFixed(0) + " MAD",
-      t("quote.labor") + ": " + labor.toFixed(0) + " MAD",
-      t("pro.profitLabel") + ": " + profitAmount.toFixed(0) + " MAD",
-      "━━━━━━━━━━━━",
-      t("quote.totalPrice") + ": " + totalQuote.toFixed(0) + " MAD",
-    ];
-    window.open("https://wa.me/?text=" + encodeURIComponent(lines.join("\n")), "_blank");
-  };
-
-  const maxMentions = Math.max(...SOCIAL_HEATMAP.map((s) => s.mentions));
+  const [activeTab, setActiveTab] = useState("overview");
 
   return (
     <div className="min-h-screen bg-background">
@@ -109,7 +44,7 @@ const ProDashboard = () => {
           </div>
         </div>
 
-        {/* Market Pulse Bar */}
+        {/* Market Pulse Bar — REAL prices from API */}
         <Card className="mb-6 relative overflow-hidden">
           <div className="zellige-card" />
           <CardContent className="relative flex flex-wrap items-center justify-between gap-4 py-4">
@@ -121,28 +56,22 @@ const ProDashboard = () => {
               <span className="font-body text-sm text-muted-foreground">{t("pro.gold18k")}</span>
               <span className="font-display font-bold text-foreground">{GOLD_PRICES["18k"]}</span>
               <span className="text-xs text-muted-foreground">{t("pro.perGram")}</span>
-              <TrendingUp className="w-4 h-4 text-accent" />
-              <span className="text-xs font-body text-accent">+{GOLD_TRENDS["18k"]}%</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="font-body text-sm text-muted-foreground">{t("pro.gold21k")}</span>
               <span className="font-display font-bold text-foreground">{GOLD_PRICES["21k"]}</span>
               <span className="text-xs text-muted-foreground">{t("pro.perGram")}</span>
-              <TrendingUp className="w-4 h-4 text-accent" />
-              <span className="text-xs font-body text-accent">+{GOLD_TRENDS["21k"]}%</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="font-body text-sm text-muted-foreground">{t("pro.gold24k")}</span>
               <span className="font-display font-bold text-foreground">{GOLD_PRICES["24k"]}</span>
               <span className="text-xs text-muted-foreground">{t("pro.perGram")}</span>
-              <TrendingUp className="w-4 h-4 text-accent" />
-              <span className="text-xs font-body text-accent">+{GOLD_TRENDS["24k"]}%</span>
             </div>
           </CardContent>
         </Card>
 
         {/* Tabs */}
-        <Tabs defaultValue="overview" className="space-y-6">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList className="bg-card border border-border p-1 h-auto flex-wrap">
             <TabsTrigger value="overview" className="font-body data-[state=active]:gold-gradient data-[state=active]:text-primary-foreground gap-2">
               <Eye className="w-4 h-4" /> {t("pro.tab.overview")}
@@ -163,208 +92,99 @@ const ProDashboard = () => {
 
           {/* OVERVIEW TAB */}
           <TabsContent value="overview" className="space-y-6">
-            {/* Gold Price Mini Chart (CSS bars) */}
+            {/* Gold Price Today — REAL data */}
             <Card className="relative overflow-hidden">
               <div className="zellige-card" />
               <CardHeader className="relative">
-                <CardTitle className="font-display text-lg text-foreground">{t("pro.priceEvolution")}</CardTitle>
+                <CardTitle className="font-display text-lg text-foreground flex items-center gap-2">
+                  <TrendingUp className="w-5 h-5 text-gold" />
+                  {t("pro.priceEvolution")}
+                </CardTitle>
               </CardHeader>
-              <CardContent className="relative">
-                <div className="flex items-end gap-0.5 h-40">
-                  {PRICE_HISTORY.map((d) => (
-                    <div
-                      key={d.day}
-                      className="flex-1 gold-gradient rounded-t-sm opacity-80 hover:opacity-100 transition-opacity"
-                      style={{ height: (d.gold24k / maxPrice) * 100 + "%" }}
-                      title={"J" + d.day + ": " + d.gold24k + " MAD/g (24K)"}
-                    />
-                  ))}
+              <CardContent className="relative space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div className="bg-secondary/50 rounded-xl p-4 text-center">
+                    <p className="text-xs text-muted-foreground font-body mb-1">Or 18K aujourd'hui</p>
+                    <p className="font-display font-bold text-2xl gold-text">{GOLD_PRICES["18k"]} <span className="text-sm">MAD/g</span></p>
+                  </div>
+                  <div className="bg-secondary/50 rounded-xl p-4 text-center">
+                    <p className="text-xs text-muted-foreground font-body mb-1">Or 21K aujourd'hui</p>
+                    <p className="font-display font-bold text-2xl gold-text">{GOLD_PRICES["21k"]} <span className="text-sm">MAD/g</span></p>
+                  </div>
+                  <div className="bg-secondary/50 rounded-xl p-4 text-center">
+                    <p className="text-xs text-muted-foreground font-body mb-1">Or 24K aujourd'hui</p>
+                    <p className="font-display font-bold text-2xl gold-text">{GOLD_PRICES["24k"]} <span className="text-sm">MAD/g</span></p>
+                  </div>
                 </div>
-                <div className="flex justify-between mt-2 text-xs text-muted-foreground font-body">
-                  <span>J1</span>
-                  <span>J15</span>
-                  <span>J30</span>
-                </div>
+                <p className="text-xs text-muted-foreground font-body text-center">
+                  Données historiques (variation 24h et 7 jours) bientôt disponibles
+                </p>
               </CardContent>
             </Card>
 
             <div className="grid md:grid-cols-2 gap-6">
-              {/* Top Scanned */}
+              {/* Statistics placeholder */}
               <Card className="relative overflow-hidden h-full">
                 <div className="zellige-card" />
                 <CardHeader className="relative">
                   <CardTitle className="font-display text-lg text-foreground flex items-center gap-2">
-                    <Search className="w-5 h-5 text-gold" /> {t("pro.topScanned")}
+                    <BarChart3 className="w-5 h-5 text-gold" /> 📊 Statistiques
                   </CardTitle>
-                  <CardDescription className="font-body">{t("pro.topScannedSub")}</CardDescription>
+                  <CardDescription className="font-body">Vos performances de vente</CardDescription>
                 </CardHeader>
-                <CardContent className="relative space-y-3">
-                  {TOP_SCANNED.map((item, i) => (
-                    <div key={i} className="flex items-center justify-between py-2 border-b border-border last:border-0">
-                      <div className="flex items-center gap-3">
-                        <span className="w-7 h-7 rounded-full gold-gradient flex items-center justify-center text-primary-foreground text-xs font-bold">
-                          {i + 1}
-                        </span>
-                        <span className="font-body text-sm text-foreground">{item.name}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs text-muted-foreground font-body">{item.scans} {t("pro.scans")}</span>
-                        {item.trend >= 0 ? (
-                          <Badge variant="secondary" className="text-xs gap-1 border-0">
-                            <TrendingUp className="w-3 h-3" /> +{item.trend}%
-                          </Badge>
-                        ) : (
-                          <Badge variant="secondary" className="text-destructive text-xs gap-1 border-0">
-                            <TrendingDown className="w-3 h-3" /> {item.trend}%
-                          </Badge>
-                        )}
-                      </div>
-                    </div>
-                  ))}
+                <CardContent className="relative flex flex-col items-center justify-center py-8 text-center">
+                  <p className="text-muted-foreground font-body text-sm mb-4">
+                    Quand vous aurez envoyé vos premiers devis, vos statistiques apparaîtront ici.
+                  </p>
+                  <Button
+                    onClick={() => setActiveTab("quotes")}
+                    className="gold-gradient text-primary-foreground border-0 gap-2 hover:opacity-90"
+                  >
+                    <FileText className="w-4 h-4" /> Créer mon premier devis →
+                  </Button>
                 </CardContent>
               </Card>
 
-              {/* Social Heatmap (CSS bars) */}
+              {/* Social trends placeholder */}
               <Card className="relative overflow-hidden h-full">
                 <div className="zellige-card" />
                 <CardHeader className="relative">
                   <CardTitle className="font-display text-lg text-foreground flex items-center gap-2">
-                    <Flame className="w-5 h-5 text-gold" /> {t("pro.socialHeatmap")}
+                    <Flame className="w-5 h-5 text-gold" /> 🔥 Tendances du marché
                   </CardTitle>
-                  <CardDescription className="font-body">{t("pro.socialHeatmapSub")}</CardDescription>
+                  <CardDescription className="font-body">Styles en vogue au Maroc</CardDescription>
                 </CardHeader>
-                <CardContent className="relative space-y-3">
-                  {SOCIAL_HEATMAP.map((item) => (
-                    <div key={item.style}>
-                      <div className="flex justify-between text-xs font-body mb-1">
-                        <span className="text-foreground">{item.style}</span>
-                        <span className="text-muted-foreground">{item.mentions.toLocaleString()} {t("pro.mentions")}</span>
-                      </div>
-                      <div className="h-3 bg-secondary rounded-full overflow-hidden">
-                        <div
-                          className="h-full gold-gradient rounded-full transition-all"
-                          style={{ width: (item.mentions / maxMentions) * 100 + "%" }}
-                        />
-                      </div>
-                    </div>
-                  ))}
+                <CardContent className="relative flex flex-col items-center justify-center py-8 text-center">
+                  <p className="text-muted-foreground font-body text-sm mb-4">
+                    Les tendances seront alimentées par les données réelles du marché marocain.
+                  </p>
+                  <Badge variant="secondary" className="text-xs">Bientôt disponible</Badge>
                 </CardContent>
               </Card>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-6">
-              {/* Quotation Maker */}
-              <Card className="relative overflow-hidden h-full">
-                <div className="zellige-card" />
-                <CardHeader className="relative">
-                  <CardTitle className="font-display text-lg text-foreground flex items-center gap-2">
-                    <FileText className="w-5 h-5 text-gold" /> {t("pro.quotationMaker")}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="relative space-y-4">
-                  <div>
-                    <Label className="font-body text-sm">{t("pro.shopName")}</Label>
-                    <Input
-                      placeholder={t("pro.shopNamePlaceholder")}
-                      value={shopName}
-                      onChange={(e) => setShopName(e.target.value)}
-                      className="bg-background border-border"
-                    />
-                  </div>
-                  <div className="grid grid-cols-3 gap-2">
-                    {["18k", "21k", "24k"].map((k) => (
-                      <button
-                        key={k}
-                        onClick={() => setQuoteKarat(k)}
-                        className={
-                          "py-2 rounded-lg text-sm font-body font-medium transition-all " +
-                          (quoteKarat === k
-                            ? "gold-gradient text-primary-foreground"
-                            : "bg-secondary text-secondary-foreground hover:bg-accent")
-                        }
-                      >
-                        {k.toUpperCase()}
-                      </button>
-                    ))}
-                  </div>
-                  <div className="grid grid-cols-3 gap-2">
-                    <div>
-                      <Label className="font-body text-xs">{t("pricing.weight")}</Label>
-                      <Input
-                        type="number" placeholder={t("pricing.weightPlaceholder")}
-                        value={quoteWeight} onChange={(e) => setQuoteWeight(e.target.value)}
-                        className="bg-background border-border"
-                      />
-                    </div>
-                    <div>
-                      <Label className="font-body text-xs">{t("pricing.labor")}</Label>
-                      <Input
-                        type="number" placeholder={t("pricing.laborPlaceholder")}
-                        value={quoteLabor} onChange={(e) => setQuoteLabor(e.target.value)}
-                        className="bg-background border-border"
-                      />
-                    </div>
-                    <div>
-                      <Label className="font-body text-xs">{t("pro.profitMargin")}</Label>
-                      <Input
-                        type="number" placeholder={t("pro.profitPlaceholder")}
-                        value={quoteProfit} onChange={(e) => setQuoteProfit(e.target.value)}
-                        className="bg-background border-border"
-                      />
-                    </div>
-                  </div>
-
-                  {weight > 0 && (
-                    <div className="bg-secondary/50 rounded-lg p-4 space-y-2">
-                      <p className="text-xs text-muted-foreground font-body">{t("pro.quotePreview")}</p>
-                      <p className="font-display font-bold text-lg gold-text">{shopName || "Aura Gold"}</p>
-                      <div className="grid grid-cols-2 gap-1 text-sm font-body">
-                        <span className="text-muted-foreground">{t("pricing.goldCost")}:</span>
-                        <span className="text-foreground font-medium">{goldCost.toFixed(0)} MAD</span>
-                        <span className="text-muted-foreground">{t("pricing.laborCost")}:</span>
-                        <span className="text-foreground font-medium">{labor.toFixed(0)} MAD</span>
-                        <span className="text-muted-foreground">{t("pro.profitLabel")}:</span>
-                        <span className="text-foreground font-medium">{profitAmount.toFixed(0)} MAD</span>
-                      </div>
-                      <div className="border-t border-border pt-2 flex items-center justify-between">
-                        <span className="font-display font-bold text-foreground">{t("pricing.total")}</span>
-                        <span className="font-display font-bold text-lg gold-text">{totalQuote.toFixed(0)} MAD</span>
-                      </div>
-                      <Button onClick={handleWhatsApp} className="w-full gold-gradient text-primary-foreground border-0 gap-2 hover:opacity-90">
-                        <Send className="w-4 h-4" /> {t("pro.shareWhatsapp")}
-                      </Button>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-
-              {/* Customer Requests */}
-              <Card className="relative overflow-hidden h-full">
-                <div className="zellige-card" />
-                <CardHeader className="relative">
-                  <CardTitle className="font-display text-lg text-foreground flex items-center gap-2">
-                    <MessageSquare className="w-5 h-5 text-gold" /> {t("pro.customerRequests")}
-                  </CardTitle>
-                  <CardDescription className="font-body">{t("pro.customerRequestsSub")}</CardDescription>
-                </CardHeader>
-                <CardContent className="relative space-y-4">
-                  {CUSTOMER_REQUESTS.map((req, i) => (
-                    <div key={i} className="bg-secondary/30 rounded-lg p-3 space-y-2">
-                      <div className="flex items-center justify-between">
-                        <span className="font-body text-sm font-medium text-foreground">{req.user}</span>
-                        <span className="text-xs text-muted-foreground font-body">{req.location} · {req.time}</span>
-                      </div>
-                      <p className="text-sm font-body text-muted-foreground">
-                        <span className="text-gold font-medium">{t("pro.lookingFor")}:</span> {req.request}
-                      </p>
-                      <Button variant="outline" size="sm" className="text-xs gap-1.5 border-border text-gold">
-                        <Phone className="w-3 h-3" /> {t("pro.contact")}
-                      </Button>
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
-            </div>
+            {/* Customer Requests placeholder */}
+            <Card className="relative overflow-hidden">
+              <div className="zellige-card" />
+              <CardHeader className="relative">
+                <CardTitle className="font-display text-lg text-foreground flex items-center gap-2">
+                  <MessageSquare className="w-5 h-5 text-gold" /> 💬 Demandes de clients
+                </CardTitle>
+                <CardDescription className="font-body">Demandes de bijoux dans votre région</CardDescription>
+              </CardHeader>
+              <CardContent className="relative flex flex-col items-center justify-center py-8 text-center">
+                <p className="text-muted-foreground font-body text-sm mb-4">
+                  Quand des clients chercheront un bijoutier dans votre ville, leurs demandes apparaîtront ici.
+                </p>
+                <Button
+                  onClick={() => setActiveTab("settings")}
+                  variant="outline"
+                  className="border-border gap-2"
+                >
+                  <Settings className="w-4 h-4" /> Compléter mon profil boutique →
+                </Button>
+              </CardContent>
+            </Card>
           </TabsContent>
 
           {/* GLOBAL TRENDS TAB */}
@@ -385,11 +205,12 @@ const ProDashboard = () => {
             <QuotationGenerator />
           </TabsContent>
 
-          {/* SHOP SETTINGS TAB */}
+          {/* SOCIAL AI TAB */}
           <TabsContent value="social" className="space-y-6">
             <SocialContentGenerator />
           </TabsContent>
 
+          {/* SHOP SETTINGS TAB */}
           <TabsContent value="settings">
             <ShopSettingsForm />
           </TabsContent>
