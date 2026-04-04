@@ -129,7 +129,7 @@ const TrendGrid = () => {
                 {item.viral_score != null && (
                   <Badge className="gold-gradient text-primary-foreground text-xs border-0 font-body">
                     <Flame className="w-3 h-3 me-1" />
-                    {item.viral_score}%
+                    {item.viral_score ?? Math.min(99, Math.round(((item.likes ?? 0) + (item.comments ?? 0) * 2) / 100))}%
                   </Badge>
                 )}
                 <Badge variant="secondary" className="text-xs font-body bg-card/90 backdrop-blur-sm text-foreground">
