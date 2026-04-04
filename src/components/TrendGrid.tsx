@@ -45,7 +45,7 @@ const TrendGrid = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("jewelry_items")
-        .select("id, image_url, source_url, platform, style, type, description, estimated_price_mad, likes, comments, viral_score, scraped_at")
+        .select("id, image_url, source_url, platform, style, type, description, estimated_price_mad, likes, comments, viral_score, scraped_at, thumbnail, content, shares, username")
         .order("viral_score", { ascending: false })
         .limit(12);
       if (error) throw error;
@@ -119,8 +119,8 @@ const TrendGrid = () => {
             <div className="zellige-card" />
             <div className="relative aspect-square overflow-hidden">
               <img
-                src={item.image_url}
-                alt={item.description || "Bijou tendance"}
+                src={item.image_url || (item as any).thumbnail || PLACEHOLDER_IMG}
+                alt={item.description || (item as any).content || "Bijou tendance"}
                 loading="lazy"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 onError={(e) => { (e.target as HTMLImageElement).src = PLACEHOLDER_IMG; }}
@@ -129,7 +129,7 @@ const TrendGrid = () => {
                 {item.viral_score != null && (
                   <Badge className="gold-gradient text-primary-foreground text-xs border-0 font-body">
                     <Flame className="w-3 h-3 me-1" />
-                    {item.viral_score}%
+                    {item.viral_score ?? Math.min(99, Math.round(((item.likes ?? 0) + (item.comments ?? 0) * 2) / 100))}%
                   </Badge>
                 )}
                 <Badge variant="secondary" className="text-xs font-body bg-card/90 backdrop-blur-sm text-foreground">
@@ -169,8 +169,11 @@ const TrendGrid = () => {
             </div>
             <div className="p-4 relative z-10">
               <h4 className="font-display font-semibold text-foreground line-clamp-2 text-sm">
-                {item.description || "Bijou tendance"}
+                {item.description || (item as any).content || "Bijou tendance"}
               </h4>
+              {(item as any).username && (
+                <p className="text-xs text-muted-foreground font-body mt-1">@{(item as any).username}</p>
+              )}
               <div className="flex items-center gap-3 mt-2 text-sm text-muted-foreground font-body">
                 <span className="flex items-center gap-1">
                   <Heart className="w-3.5 h-3.5 text-gold" /> {formatLikes(item.likes)}

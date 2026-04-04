@@ -17,47 +17,74 @@ export type Database = {
       jewelry_items: {
         Row: {
           comments: number | null
+          content: string | null
           created_at: string
           description: string | null
           estimated_price_mad: number | null
+          hashtags: string | null
           id: string
           image_url: string
           likes: number | null
+          media_type: string | null
           platform: string
+          post_url: string | null
           scraped_at: string
+          shares: number | null
           source_url: string | null
           style: string
+          thumbnail: string | null
+          timestamp: string | null
           type: string | null
+          url: string | null
+          username: string | null
           viral_score: number | null
         }
         Insert: {
           comments?: number | null
+          content?: string | null
           created_at?: string
           description?: string | null
           estimated_price_mad?: number | null
+          hashtags?: string | null
           id?: string
           image_url: string
           likes?: number | null
+          media_type?: string | null
           platform?: string
+          post_url?: string | null
           scraped_at?: string
+          shares?: number | null
           source_url?: string | null
           style?: string
+          thumbnail?: string | null
+          timestamp?: string | null
           type?: string | null
+          url?: string | null
+          username?: string | null
           viral_score?: number | null
         }
         Update: {
           comments?: number | null
+          content?: string | null
           created_at?: string
           description?: string | null
           estimated_price_mad?: number | null
+          hashtags?: string | null
           id?: string
           image_url?: string
           likes?: number | null
+          media_type?: string | null
           platform?: string
+          post_url?: string | null
           scraped_at?: string
+          shares?: number | null
           source_url?: string | null
           style?: string
+          thumbnail?: string | null
+          timestamp?: string | null
           type?: string | null
+          url?: string | null
+          username?: string | null
           viral_score?: number | null
         }
         Relationships: []
