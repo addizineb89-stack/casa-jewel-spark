@@ -1,26 +1,29 @@
 import { motion } from "framer-motion";
-import { Flame, Heart, Bookmark, Eye, MapPin } from "lucide-react";
+import { Flame, Heart, Bookmark, Eye, MapPin, ExternalLink, RefreshCw, Tag } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/i18n/LanguageContext";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
-import jewelry1 from "@/assets/jewelry-1.jpg";
-import jewelry2 from "@/assets/jewelry-2.jpg";
-import jewelry3 from "@/assets/jewelry-3.jpg";
-import jewelry4 from "@/assets/jewelry-4.jpg";
-import jewelry5 from "@/assets/jewelry-5.jpg";
-import jewelry6 from "@/assets/jewelry-6.jpg";
+function formatLikes(n: number | null): string {
+  if (!n) return "0";
+  if (n >= 1000) return (n / 1000).toFixed(1).replace(/\.0$/, "") + "K";
+  return String(n);
+}
 
-const trendingItems = [
-  { id: 1, image: jewelry1, name: "Bracelet Beldi Royal", viralScore: 94, likes: "12.4K", platform: "Instagram", style: "Beldi", city: "Casablanca" },
-  { id: 2, image: jewelry2, name: "Collier Pendentif Moderne", viralScore: 87, likes: "8.9K", platform: "TikTok", style: "Moderne", city: "Marrakech" },
-  { id: 3, image: jewelry3, name: "Bague Filigrane Fès", viralScore: 82, likes: "6.2K", platform: "Instagram", style: "Beldi", city: "Fès" },
-  { id: 4, image: jewelry4, name: "Boucles Zellige Or", viralScore: 79, likes: "5.8K", platform: "TikTok", style: "Beldi", city: "Tanger" },
-  { id: 5, image: jewelry5, name: "Gourmette Cuban Link", viralScore: 91, likes: "11.1K", platform: "Instagram", style: "Moderne", city: "Rabat" },
-  { id: 6, image: jewelry6, name: "Manchette Arabesque", viralScore: 76, likes: "4.5K", platform: "Instagram", style: "Beldi", city: "Agadir" },
-];
+function timeAgo(dateStr: string): string {
+  const diff = Date.now() - new Date(dateStr).getTime();
+  const hours = Math.floor(diff / 3600000);
+  if (hours < 1) return "< 1h";
+  if (hours < 24) return `${hours}h`;
+  return `${Math.floor(hours / 24)}j`;
+}
+
+const PLACEHOLDER_IMG = "/placeholder.svg";
 
 const SkeletonCard = () => (
   <div className="bg-card rounded-lg overflow-hidden shadow-[var(--shadow-card)]">
@@ -35,15 +38,23 @@ const SkeletonCard = () => (
 const TrendGrid = () => {
   const { toast } = useToast();
   const { t } = useLanguage();
-  const [saved, setSaved] = useState<Set<number>>(new Set());
-  const [loading, setLoading] = useState(true);
+  const [saved, setSaved] = useState<Set<string>>(new Set());
 
-  useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 1200);
-    return () => clearTimeout(timer);
-  }, []);
+  const { data: items, isLoading, error, refetch } = useQuery({
+    queryKey: ["trending-jewelry"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("jewelry_items")
+        .select("id, image_url, source_url, platform, style, type, description, estimated_price_mad, likes, comments, viral_score, scraped_at")
+        .order("viral_score", { ascending: false })
+        .limit(12);
+      if (error) throw error;
+      return data;
+    },
+    refetchInterval: 5 * 60 * 1000,
+  });
 
-  const toggleSave = (id: number) => {
+  const toggleSave = (id: string) => {
     setSaved((prev) => {
       const next = new Set(prev);
       if (next.has(id)) next.delete(id);
@@ -53,7 +64,7 @@ const TrendGrid = () => {
     toast({ title: saved.has(id) ? t("trends.removedFromCatalog") : t("trends.savedToCatalog") });
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {Array.from({ length: 6 }).map((_, i) => (
@@ -63,10 +74,41 @@ const TrendGrid = () => {
     );
   }
 
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center py-16 text-center">
+        <p className="text-destructive font-body mb-4">Erreur de chargement des tendances</p>
+        <Button onClick={() => refetch()} variant="outline" className="gap-2">
+          <RefreshCw className="w-4 h-4" /> Réessayer
+        </Button>
+      </div>
+    );
+  }
+
+  if (!items || items.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center py-16 text-center">
+        <Flame className="w-12 h-12 text-gold mb-4" />
+        <h3 className="font-display text-lg font-semibold text-foreground mb-2">🔥 Les tendances bijoutières arrivent bientôt</h3>
+        <p className="text-muted-foreground font-body text-sm max-w-md">
+          Nous collectons les dernières données Instagram & TikTok du Maroc
+        </p>
+      </div>
+    );
+  }
+
+  const latestScrape = items.reduce((latest, item) =>
+    item.scraped_at > latest ? item.scraped_at : latest, items[0].scraped_at
+  );
+
   return (
     <div>
+      <p className="text-xs text-muted-foreground font-body mb-3">
+        {items.length} tendances • Dernière mise à jour il y a {timeAgo(latestScrape)}
+      </p>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {trendingItems.map((item, i) => (
+        {items.map((item, i) => (
           <motion.div
             key={item.id}
             initial={{ opacity: 0, y: 20 }}
@@ -77,21 +119,34 @@ const TrendGrid = () => {
             <div className="zellige-card" />
             <div className="relative aspect-square overflow-hidden">
               <img
-                src={item.image}
-                alt={item.name}
+                src={item.image_url}
+                alt={item.description || "Bijou tendance"}
                 loading="lazy"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                onError={(e) => { (e.target as HTMLImageElement).src = PLACEHOLDER_IMG; }}
               />
               <div className="absolute top-3 start-3 flex gap-2">
-                <Badge className="gold-gradient text-primary-foreground text-xs border-0 font-body">
-                  <Flame className="w-3 h-3 me-1" />
-                  {item.viralScore}%
-                </Badge>
+                {item.viral_score != null && (
+                  <Badge className="gold-gradient text-primary-foreground text-xs border-0 font-body">
+                    <Flame className="w-3 h-3 me-1" />
+                    {item.viral_score}%
+                  </Badge>
+                )}
                 <Badge variant="secondary" className="text-xs font-body bg-card/90 backdrop-blur-sm text-foreground">
                   {item.platform}
                 </Badge>
               </div>
-              <div className="absolute top-3 end-3">
+              <div className="absolute top-3 end-3 flex gap-1">
+                {item.source_url && (
+                  <a
+                    href={item.source_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-8 h-8 rounded-full bg-card/90 backdrop-blur-sm flex items-center justify-center hover:bg-card transition-colors"
+                  >
+                    <ExternalLink className="w-4 h-4 text-foreground" />
+                  </a>
+                )}
                 <button
                   onClick={() => toggleSave(item.id)}
                   className="w-8 h-8 rounded-full bg-card/90 backdrop-blur-sm flex items-center justify-center hover:bg-card transition-colors"
@@ -100,20 +155,31 @@ const TrendGrid = () => {
                 </button>
               </div>
               <div className="absolute bottom-3 start-3 flex gap-2">
-                <Badge variant="outline" className="text-xs font-body bg-card/90 backdrop-blur-sm border-0 text-foreground">
-                  {item.style}
-                </Badge>
-                <Badge variant="outline" className="text-xs font-body bg-card/90 backdrop-blur-sm border-0 text-foreground gap-1">
-                  <MapPin className="w-3 h-3" /> {item.city}
-                </Badge>
+                {item.style && (
+                  <Badge variant="outline" className="text-xs font-body bg-card/90 backdrop-blur-sm border-0 text-foreground">
+                    {item.style}
+                  </Badge>
+                )}
+                {item.type && (
+                  <Badge variant="outline" className="text-xs font-body bg-card/90 backdrop-blur-sm border-0 text-foreground gap-1">
+                    <Tag className="w-3 h-3" /> {item.type}
+                  </Badge>
+                )}
               </div>
             </div>
             <div className="p-4 relative z-10">
-              <h4 className="font-display font-semibold text-foreground">{item.name}</h4>
+              <h4 className="font-display font-semibold text-foreground line-clamp-2 text-sm">
+                {item.description || "Bijou tendance"}
+              </h4>
               <div className="flex items-center gap-3 mt-2 text-sm text-muted-foreground font-body">
                 <span className="flex items-center gap-1">
-                  <Heart className="w-3.5 h-3.5 text-gold" /> {item.likes}
+                  <Heart className="w-3.5 h-3.5 text-gold" /> {formatLikes(item.likes)}
                 </span>
+                {item.estimated_price_mad != null && (
+                  <span className="flex items-center gap-1 font-semibold text-foreground">
+                    ~{Number(item.estimated_price_mad).toLocaleString()} MAD
+                  </span>
+                )}
                 <span className="flex items-center gap-1">
                   <Eye className="w-3.5 h-3.5" /> {t("trends.trending")}
                 </span>
@@ -122,7 +188,6 @@ const TrendGrid = () => {
           </motion.div>
         ))}
       </div>
-      <p className="text-xs text-muted-foreground font-body text-end mt-3">Mis à jour à l'instant</p>
     </div>
   );
 };
