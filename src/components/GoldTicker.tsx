@@ -33,6 +33,12 @@ const GoldTicker = () => {
         <div className="flex items-center gap-2 px-4 border-e border-primary-foreground/20">
           <div className="w-2 h-2 rounded-full bg-green-400 pulse-gold" />
           <span className="text-primary-foreground/80 text-xs font-body font-semibold uppercase tracking-wider">{t("ticker.live")}</span>
+          {prices.updatedAt && (
+            <span className="flex items-center gap-1 text-primary-foreground/50 text-xs font-body">
+              <Clock className="w-3 h-3" />
+              {timeAgo(prices.updatedAt)}
+            </span>
+          )}
         </div>
         <div className="flex items-center gap-2 px-4 border-e border-primary-foreground/20">
           <span className="text-primary-foreground/60 text-xs font-body">{t("ticker.goldPrice")}</span>
