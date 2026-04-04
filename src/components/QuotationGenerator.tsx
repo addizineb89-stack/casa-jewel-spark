@@ -1,7 +1,7 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   Camera, Upload, Send, FileText, ImageIcon, Eye,
-  Gem, Scale, Coins, ChevronDown
+  Gem, Scale, Coins, Phone, Clock, X
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -21,6 +21,29 @@ const TREND_MODELS = [
   { name: "Collier Ras-de-cou", img: "💎" },
 ];
 
+const RECENT_NUMBERS_KEY = "aura_recent_wa_numbers";
+
+function getRecentNumbers(): string[] {
+  try {
+    return JSON.parse(localStorage.getItem(RECENT_NUMBERS_KEY) || "[]").slice(0, 5);
+  } catch { return []; }
+}
+
+function saveRecentNumber(num: string) {
+  const recent = getRecentNumbers().filter(n => n !== num);
+  recent.unshift(num);
+  localStorage.setItem(RECENT_NUMBERS_KEY, JSON.stringify(recent.slice(0, 5)));
+}
+
+function formatPhoneForWA(phone: string): string {
+  return phone.replace(/[\s\-\+\(\)]/g, "");
+}
+
+function isValidPhone(phone: string): boolean {
+  const cleaned = formatPhoneForWA(phone);
+  return /^\d{10,15}$/.test(cleaned);
+}
+
 const QuotationGenerator = () => {
   const { t } = useLanguage();
   const { toast } = useToast();
@@ -31,13 +54,15 @@ const QuotationGenerator = () => {
   const [photoName, setPhotoName] = useState("");
   const [karat, setKarat] = useState("18k");
   const [weight, setWeight] = useState("");
-  const [labor, setLabor] = useState(() => {
-    // Could be pre-filled from settings in a real app
-    return "";
-  });
-  const [showPreview, setShowPreview] = useState(false);
+  const [labor, setLabor] = useState("");
+  const [clientPhone, setClientPhone] = useState("");
+  const [recentNumbers, setRecentNumbers] = useState<string[]>([]);
+  const [showRecent, setShowRecent] = useState(false);
 
-  // Read shop settings from localStorage (shared with ShopSettingsForm in future)
+  useEffect(() => {
+    setRecentNumbers(getRecentNumbers());
+  }, []);
+
   const shopName = "Aura Gold";
   const shopLogo: string | null = null;
 
@@ -68,9 +93,9 @@ const QuotationGenerator = () => {
     setPhotoName(model.name);
   };
 
-  const handleWhatsAppShare = () => {
+  const buildMessage = () => {
     const today = new Date().toLocaleDateString("fr-MA");
-    const msg = [
+    return [
       `السلام عليكم، معكم ${shopName}.`,
       `إليكم تفاصيل عرض السعر:`,
       `━━━━━━━━━━━━━━━`,
@@ -84,8 +109,31 @@ const QuotationGenerator = () => {
       ``,
       `شكرا لثقتكم. 🙏`,
     ].filter(Boolean).join("\n");
+  };
 
-    window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank");
+  const handleWhatsAppShare = (withNumber: boolean) => {
+    const msg = buildMessage();
+    if (withNumber) {
+      if (!clientPhone.trim()) {
+        toast({ title: "Entrez le numéro du client", variant: "destructive" });
+        return;
+      }
+      if (!isValidPhone(clientPhone)) {
+        toast({ title: "Numéro invalide (format: +212 6XX XXX XXX)", variant: "destructive" });
+        return;
+      }
+      const cleaned = formatPhoneForWA(clientPhone);
+      saveRecentNumber(clientPhone.trim());
+      setRecentNumbers(getRecentNumbers());
+      window.open(`https://wa.me/${cleaned}?text=${encodeURIComponent(msg)}`, "_blank");
+    } else {
+      window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank");
+    }
+  };
+
+  const selectRecentNumber = (num: string) => {
+    setClientPhone(num);
+    setShowRecent(false);
   };
 
   return (
@@ -221,6 +269,53 @@ const QuotationGenerator = () => {
             </div>
           </div>
 
+          {/* Client WhatsApp Number */}
+          <div className="space-y-2">
+            <Label className="font-body text-sm flex items-center gap-2">
+              <Phone className="w-4 h-4 text-muted-foreground" />
+              Numéro WhatsApp du client
+            </Label>
+            <div className="relative">
+              <Input
+                type="tel"
+                placeholder="+212 6XX XXX XXX"
+                value={clientPhone}
+                onChange={(e) => setClientPhone(e.target.value)}
+                onFocus={() => recentNumbers.length > 0 && setShowRecent(true)}
+                onBlur={() => setTimeout(() => setShowRecent(false), 200)}
+                className="bg-background border-border"
+              />
+              {clientPhone && (
+                <button
+                  onClick={() => setClientPhone("")}
+                  className="absolute end-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
+            {/* Recent numbers dropdown */}
+            {showRecent && recentNumbers.length > 0 && (
+              <div className="rounded-lg border border-border bg-card shadow-md overflow-hidden">
+                <p className="px-3 py-1.5 text-xs text-muted-foreground font-body flex items-center gap-1">
+                  <Clock className="w-3 h-3" /> Numéros récents
+                </p>
+                {recentNumbers.map((num, i) => (
+                  <button
+                    key={i}
+                    onMouseDown={() => selectRecentNumber(num)}
+                    className="w-full px-3 py-2 text-sm font-body text-foreground hover:bg-secondary transition-colors text-left"
+                  >
+                    {num}
+                  </button>
+                ))}
+              </div>
+            )}
+            <p className="text-xs text-muted-foreground font-body">
+              Optionnel — laissez vide pour choisir le contact dans WhatsApp
+            </p>
+          </div>
+
           {/* Live Calculation */}
           {isValid && (
             <div className="rounded-xl bg-secondary/50 border border-border p-4 space-y-3">
@@ -320,13 +415,23 @@ const QuotationGenerator = () => {
               </p>
             </div>
 
-            {/* Share Button */}
-            <Button
-              onClick={handleWhatsAppShare}
-              className="w-full gold-gradient text-primary-foreground border-0 gap-2 hover:opacity-90 h-12 text-base font-display font-semibold"
-            >
-              <Send className="w-5 h-5" /> {t("quotes.generateShare")}
-            </Button>
+            {/* Share Buttons */}
+            <div className="space-y-2">
+              <Button
+                onClick={() => handleWhatsAppShare(true)}
+                className="w-full gold-gradient text-primary-foreground border-0 gap-2 hover:opacity-90 h-12 text-base font-display font-semibold"
+              >
+                <Send className="w-5 h-5" />
+                {clientPhone ? `Envoyer à ${clientPhone}` : t("quotes.generateShare")}
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => handleWhatsAppShare(false)}
+                className="w-full border-border gap-2 h-10 text-sm font-body text-muted-foreground hover:text-foreground"
+              >
+                <Send className="w-4 h-4" /> Partager sans destinataire
+              </Button>
+            </div>
           </CardContent>
         </Card>
       )}
