@@ -112,15 +112,16 @@ export default function SocialContentGenerator() {
           <p className="text-sm font-semibold text-foreground">① Prends une photo de ton bijou</p>
           <div
             onClick={() => fileRef.current?.click()}
-            className="border-2 border-dashed border-border rounded-xl p-6 text-center cursor-pointer hover:border-amber-400 transition-colors bg-muted/30"
+            className="border-2 border-dashed border-border rounded-xl p-6 text-center cursor-pointer hover:border-amber-400 transition-colors bg-muted/30 min-h-[200px] flex items-center justify-center"
           >
             {preview ? (
               <img src={preview} alt="bijou" className="max-h-52 mx-auto rounded-lg object-cover" />
             ) : (
               <div className="space-y-3">
                 <Camera className="w-12 h-12 mx-auto text-amber-500" />
-                <p className="text-base font-medium text-foreground">Appuyer ici pour prendre une photo</p>
+                <p className="text-base font-medium text-foreground">📸 Photographier votre bijou</p>
                 <p className="text-xs text-muted-foreground">ou choisir depuis la galerie</p>
+                <p className="text-xs text-muted-foreground/70 mt-2">L'IA va analyser votre bijou et créer du contenu pour vos réseaux sociaux</p>
               </div>
             )}
           </div>
