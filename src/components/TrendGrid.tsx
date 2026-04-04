@@ -45,7 +45,7 @@ const TrendGrid = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("jewelry_items")
-        .select("id, image_url, source_url, platform, style, type, description, estimated_price_mad, likes, comments, viral_score, scraped_at")
+        .select("id, image_url, source_url, platform, style, type, description, estimated_price_mad, likes, comments, viral_score, scraped_at, thumbnail, content, shares, username")
         .order("viral_score", { ascending: false })
         .limit(12);
       if (error) throw error;
