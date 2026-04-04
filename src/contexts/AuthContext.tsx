@@ -1,4 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import type { User as SupabaseUser, Session } from "@supabase/supabase-js";
 
 export interface User {
   id: string;
@@ -8,66 +10,88 @@ export interface User {
   role: "client" | "jeweler";
   shopName?: string;
   plan: "free" | "aura" | "pro_partner";
-  token: string;
 }
 
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
+  loading: boolean;
   login: (email: string, password: string) => Promise<void>;
-  signup: (data: Omit<User, "id" | "token" | "plan"> & { password: string }) => Promise<void>;
+  signup: (data: { name: string; email: string; phone: string; password: string; role: "client" | "jeweler"; shopName?: string }) => Promise<void>;
   logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+function mapSupabaseUser(su: SupabaseUser): User {
+  const meta = su.user_metadata || {};
+  return {
+    id: su.id,
+    email: su.email || "",
+    name: meta.name || su.email?.split("@")[0] || "",
+    phone: meta.phone || su.phone || "",
+    role: meta.role || "client",
+    shopName: meta.shopName,
+    plan: meta.plan || "free",
+  };
+}
+
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const stored = sessionStorage.getItem("aura_user");
-    if (stored) {
-      try { setUser(JSON.parse(stored)); } catch { sessionStorage.removeItem("aura_user"); }
-    }
+    // Set up auth state listener FIRST
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user) {
+        setUser(mapSupabaseUser(session.user));
+      } else {
+        setUser(null);
+      }
+      setLoading(false);
+    });
+
+    // THEN check existing session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) {
+        setUser(mapSupabaseUser(session.user));
+      }
+      setLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
-  const persist = (u: User) => {
-    sessionStorage.setItem("aura_user", JSON.stringify(u));
-    setUser(u);
-  };
-
-  const login = useCallback(async (email: string, _password: string) => {
-    // Mock login — replace with real API
-    const mockUser: User = {
-      id: crypto.randomUUID(),
-      email,
-      name: email.split("@")[0],
-      phone: "+212600000000",
-      role: "client",
-      plan: "free",
-      token: crypto.randomUUID(),
-    };
-    persist(mockUser);
+  const login = useCallback(async (email: string, password: string) => {
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) throw new Error(error.message);
   }, []);
 
-  const signup = useCallback(async (data: Omit<User, "id" | "token" | "plan"> & { password: string }) => {
-    const { password: _, ...rest } = data;
-    const newUser: User = {
-      ...rest,
-      id: crypto.randomUUID(),
-      plan: "free",
-      token: crypto.randomUUID(),
-    };
-    persist(newUser);
+  const signup = useCallback(async (data: { name: string; email: string; phone: string; password: string; role: "client" | "jeweler"; shopName?: string }) => {
+    const { error } = await supabase.auth.signUp({
+      email: data.email,
+      password: data.password,
+      options: {
+        emailRedirectTo: window.location.origin,
+        data: {
+          name: data.name,
+          phone: data.phone,
+          role: data.role,
+          shopName: data.shopName,
+          plan: "free",
+        },
+      },
+    });
+    if (error) throw new Error(error.message);
   }, []);
 
-  const logout = useCallback(() => {
-    sessionStorage.removeItem("aura_user");
+  const logout = useCallback(async () => {
+    await supabase.auth.signOut();
     setUser(null);
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated: !!user, login, signup, logout }}>
+    <AuthContext.Provider value={{ user, isAuthenticated: !!user, loading, login, signup, logout }}>
       {children}
     </AuthContext.Provider>
   );
