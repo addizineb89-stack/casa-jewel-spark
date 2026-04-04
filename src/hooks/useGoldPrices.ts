@@ -25,6 +25,7 @@ export function useGoldPrices() {
     async function load() {
       try {
         const data = await fetchGoldPrices()
+        console.log('Gold prices loaded:', data)
         if (!cancelled) {
           setPrices(data)
           setError(null)

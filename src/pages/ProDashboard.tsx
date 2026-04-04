@@ -45,8 +45,8 @@ const CUSTOMER_REQUESTS = [
 
 const PRICE_HISTORY = Array.from({ length: 30 }, (_, i) => ({
   day: i + 1,
-  gold18k: Math.round(510 + Math.sin(i / 4) * 15 + i * 0.4),
-  gold24k: Math.round(680 + Math.sin(i / 3) * 20 + i * 0.6),
+  gold18k: Math.round(1070 + Math.sin(i / 4) * 30 + i * 0.8),
+  gold24k: Math.round(1400 + Math.sin(i / 3) * 40 + i * 1.2),
 }));
 
 const maxPrice = Math.max(...PRICE_HISTORY.map((d) => d.gold24k));

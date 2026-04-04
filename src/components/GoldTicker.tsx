@@ -43,7 +43,12 @@ const GoldTicker = () => {
         <div className="flex items-center gap-2 px-4 border-e border-primary-foreground/20">
           <span className="text-primary-foreground/60 text-xs font-body">{t("ticker.goldPrice")}</span>
         </div>
-        <div className="ticker-scroll flex items-center whitespace-nowrap">
+        {loading ? (
+          <div className="flex items-center px-6">
+            <span className="text-primary-foreground/60 text-sm font-body animate-pulse">Chargement des prix...</span>
+          </div>
+        ) : null}
+        <div className={`ticker-scroll flex items-center whitespace-nowrap ${loading ? 'opacity-50' : ''}`}>
           <PriceItem label="Or 9K"  price={prices['9k']}  />
           <span className="text-primary-foreground/30 mx-2">•</span>
           <PriceItem label="Or 14K" price={prices['14k']} />
