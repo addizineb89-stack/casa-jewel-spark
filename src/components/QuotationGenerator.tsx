@@ -68,7 +68,7 @@ const QuotationGenerator = () => {
 
   const weightNum = parseFloat(weight) || 0;
   const laborNum = parseFloat(labor) || 0;
-  const goldPrice = (GOLD_PRICES[karat as keyof typeof GOLD_PRICES] as number) || 523;
+  const goldPrice = Number(GOLD_PRICES[karat as keyof typeof GOLD_PRICES]);
   const goldCost = weightNum * goldPrice;
   const totalPrice = goldCost + laborNum;
   const isValid = weightNum > 0;
