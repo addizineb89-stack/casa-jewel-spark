@@ -3,14 +3,14 @@ import { fetchGoldPrices, GoldPrices } from '@/lib/api'
 
 // Fallback prices (used while loading or on error)
 const FALLBACK: GoldPrices = {
-  '9k': 601.83,
-  '14k': 842.56,
-  '18k': 1083.29,
-  '21k': 1263.84,
-  '22k': 1324.02,
-  '24k': 1444.39,
-  usdPerOunce: 4492,
-  usdToMad: 10,
+  '9k': 530.00,
+  '14k': 830.00,
+  '18k': 1070.00,
+  '21k': 1250.00,
+  '22k': 1310.00,
+  '24k': 1400.00,
+  usdPerOunce: 4676,
+  usdToMad: 9.40,
   updatedAt: new Date().toISOString(),
 }
 
