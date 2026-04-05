@@ -15,6 +15,10 @@ function formatLikes(n: number | null): string {
   return String(n);
 }
 
+function cleanDescription(text: string): string {
+  return text.replace(/#\w+/g, "").replace(/\s+/g, " ").trim().slice(0, 80) + (text.length > 80 ? "…" : "");
+}
+
 function timeAgo(dateStr: string): string {
   const diff = Date.now() - new Date(dateStr).getTime();
   const hours = Math.floor(diff / 3600000);
@@ -85,7 +89,12 @@ const TrendGrid = () => {
     );
   }
 
-  if (!items || items.length === 0) {
+  const validItems = items?.filter(item => {
+    const img = item.image_url || item.thumbnail || '';
+    return img.length > 10 && !img.includes('placeholder');
+  }) || [];
+
+  if (validItems.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-16 text-center">
         <Flame className="w-12 h-12 text-gold mb-4" />
@@ -97,18 +106,25 @@ const TrendGrid = () => {
     );
   }
 
-  const latestScrape = items.reduce((latest, item) =>
-    item.scraped_at > latest ? item.scraped_at : latest, items[0].scraped_at
+  const latestScrape = validItems.reduce((latest, item) =>
+    item.scraped_at > latest ? item.scraped_at : latest, validItems[0].scraped_at
   );
 
   return (
     <div>
       <p className="text-xs text-muted-foreground font-body mb-3">
-        {items.length} tendances • Dernière mise à jour il y a {timeAgo(latestScrape)}
+        {validItems.length} tendances • Dernière mise à jour il y a {timeAgo(latestScrape)}
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {items.map((item, i) => (
+        {validItems.map((item, i) => {
+          const imageUrl = item.image_url || item.thumbnail || PLACEHOLDER_IMG;
+          const rawDesc = item.description || item.content || "Bijou tendance";
+          const desc = cleanDescription(rawDesc);
+          const viralScore = item.viral_score ?? Math.min(99, Math.round(((item.likes ?? 0) + (item.comments ?? 0) * 2) / 500));
+          const isViral = viralScore > 95;
+
+          return (
           <motion.div
             key={item.id}
             initial={{ opacity: 0, y: 20 }}
@@ -119,19 +135,17 @@ const TrendGrid = () => {
             <div className="zellige-card" />
             <div className="relative aspect-square overflow-hidden">
               <img
-                src={item.image_url || (item as any).thumbnail || PLACEHOLDER_IMG}
-                alt={item.description || (item as any).content || "Bijou tendance"}
+                src={imageUrl}
+                alt={desc}
                 loading="lazy"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 onError={(e) => { (e.target as HTMLImageElement).src = PLACEHOLDER_IMG; }}
               />
               <div className="absolute top-3 start-3 flex gap-2">
-                {item.viral_score != null && (
                   <Badge className="gold-gradient text-primary-foreground text-xs border-0 font-body">
                     <Flame className="w-3 h-3 me-1" />
-                    {item.viral_score ?? Math.min(99, Math.round(((item.likes ?? 0) + (item.comments ?? 0) * 2) / 100))}%
+                    {isViral ? "🔥 Viral" : `${viralScore}%`}
                   </Badge>
-                )}
                 <Badge variant="secondary" className="text-xs font-body bg-card/90 backdrop-blur-sm text-foreground">
                   {item.platform}
                 </Badge>
@@ -169,10 +183,10 @@ const TrendGrid = () => {
             </div>
             <div className="p-4 relative z-10">
               <h4 className="font-display font-semibold text-foreground line-clamp-2 text-sm">
-                {item.description || (item as any).content || "Bijou tendance"}
+                {desc}
               </h4>
-              {(item as any).username && (
-                <p className="text-xs text-muted-foreground font-body mt-1">@{(item as any).username}</p>
+              {item.username && (
+                <p className="text-xs text-muted-foreground font-body mt-1">@{item.username}</p>
               )}
               <div className="flex items-center gap-3 mt-2 text-sm text-muted-foreground font-body">
                 <span className="flex items-center gap-1">
@@ -189,7 +203,8 @@ const TrendGrid = () => {
               </div>
             </div>
           </motion.div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
