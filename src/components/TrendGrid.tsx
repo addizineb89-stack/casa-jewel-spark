@@ -15,6 +15,10 @@ function formatLikes(n: number | null): string {
   return String(n);
 }
 
+function cleanDescription(text: string): string {
+  return text.replace(/#\w+/g, "").replace(/\s+/g, " ").trim().slice(0, 80) + (text.length > 80 ? "…" : "");
+}
+
 function timeAgo(dateStr: string): string {
   const diff = Date.now() - new Date(dateStr).getTime();
   const hours = Math.floor(diff / 3600000);
