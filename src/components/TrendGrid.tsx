@@ -46,8 +46,8 @@ const TrendGrid = () => {
       const { data, error } = await supabase
         .from("jewelry_items")
         .select("id, image_url, source_url, platform, style, type, description, estimated_price_mad, likes, comments, viral_score, scraped_at, thumbnail, content, shares, username")
-        .order("viral_score", { ascending: false })
-        .limit(12);
+        .order("likes", { ascending: false })
+        .limit(24);
       if (error) throw error;
       return data;
     },
