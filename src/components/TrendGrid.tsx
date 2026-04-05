@@ -144,9 +144,8 @@ const TrendGrid = () => {
               <div className="absolute top-3 start-3 flex gap-2">
                   <Badge className="gold-gradient text-primary-foreground text-xs border-0 font-body">
                     <Flame className="w-3 h-3 me-1" />
-                    {item.viral_score ?? Math.min(99, Math.round(((item.likes ?? 0) + (item.comments ?? 0) * 2) / 100))}%
+                    {isViral ? "🔥 Viral" : `${viralScore}%`}
                   </Badge>
-                )}
                 <Badge variant="secondary" className="text-xs font-body bg-card/90 backdrop-blur-sm text-foreground">
                   {item.platform}
                 </Badge>
@@ -184,10 +183,10 @@ const TrendGrid = () => {
             </div>
             <div className="p-4 relative z-10">
               <h4 className="font-display font-semibold text-foreground line-clamp-2 text-sm">
-                {item.description || (item as any).content || "Bijou tendance"}
+                {desc}
               </h4>
-              {(item as any).username && (
-                <p className="text-xs text-muted-foreground font-body mt-1">@{(item as any).username}</p>
+              {item.username && (
+                <p className="text-xs text-muted-foreground font-body mt-1">@{item.username}</p>
               )}
               <div className="flex items-center gap-3 mt-2 text-sm text-muted-foreground font-body">
                 <span className="flex items-center gap-1">
@@ -204,7 +203,8 @@ const TrendGrid = () => {
               </div>
             </div>
           </motion.div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
