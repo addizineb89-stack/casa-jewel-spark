@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Flame, Heart, Bookmark, Eye, MapPin, ExternalLink, RefreshCw, Tag } from "lucide-react";
+import { Flame, Heart, Bookmark, Eye, Tag, ExternalLink, RefreshCw } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
@@ -27,7 +27,14 @@ function timeAgo(dateStr: string): string {
   return `${Math.floor(hours / 24)}j`;
 }
 
-const PLACEHOLDER_IMG = "/placeholder.svg";
+// Elegant placeholder for items without images
+const ImagePlaceholder = ({ type, style, platform }: { type?: string | null; style?: string; platform?: string }) => (
+  <div className="w-full h-full bg-gradient-to-br from-amber-50 to-amber-100 flex flex-col items-center justify-center gap-2">
+    <span className="text-4xl">💍</span>
+    <span className="text-sm font-body font-medium text-amber-800/70">{type || style || "Bijou"}</span>
+    <span className="text-xs font-body text-amber-600/50">{platform}</span>
+  </div>
+);
 
 const SkeletonCard = () => (
   <div className="bg-card rounded-lg overflow-hidden shadow-[var(--shadow-card)]">
@@ -43,6 +50,7 @@ const TrendGrid = () => {
   const { toast } = useToast();
   const { t } = useLanguage();
   const [saved, setSaved] = useState<Set<string>>(new Set());
+  const [brokenImages, setBrokenImages] = useState<Set<string>>(new Set());
 
   const { data: items, isLoading, error, refetch } = useQuery({
     queryKey: ["trending-jewelry"],
@@ -119,91 +127,96 @@ const TrendGrid = () => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {validItems.map((item, i) => {
-          const imageUrl = item.image_url || item.thumbnail || PLACEHOLDER_IMG;
+          const imageUrl = item.image_url || item.thumbnail || "";
+          const hasValidImage = imageUrl.length > 10 && !brokenImages.has(item.id);
           const rawDesc = item.description || item.content || "Bijou tendance";
           const desc = cleanDescription(rawDesc);
           const viralScore = item.viral_score ?? Math.min(99, Math.round(((item.likes ?? 0) + (item.comments ?? 0) * 2) / 500));
           const isViral = viralScore > 95;
 
           return (
-          <motion.div
-            key={item.id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.08 }}
-            className="group bg-card rounded-lg overflow-hidden shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] transition-shadow relative"
-          >
-            <div className="zellige-card" />
-            <div className="relative aspect-square overflow-hidden">
-              <img
-                src={imageUrl}
-                alt={desc}
-                loading="lazy"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                onError={(e) => { (e.target as HTMLImageElement).src = PLACEHOLDER_IMG; }}
-              />
-              <div className="absolute top-3 start-3 flex gap-2">
+            <motion.div
+              key={item.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.08 }}
+              className="group bg-card rounded-lg overflow-hidden shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] transition-shadow relative"
+            >
+              <div className="zellige-card" />
+              <div className="relative aspect-square overflow-hidden">
+                {hasValidImage ? (
+                  <img
+                    src={imageUrl}
+                    alt={desc}
+                    loading="lazy"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    onError={() => setBrokenImages(prev => new Set(prev).add(item.id))}
+                  />
+                ) : (
+                  <ImagePlaceholder type={item.type} style={item.style} platform={item.platform} />
+                )}
+                <div className="absolute top-3 start-3 flex gap-2">
                   <Badge className="gold-gradient text-primary-foreground text-xs border-0 font-body">
                     <Flame className="w-3 h-3 me-1" />
                     {isViral ? "🔥 Viral" : `${viralScore}%`}
                   </Badge>
-                <Badge variant="secondary" className="text-xs font-body bg-card/90 backdrop-blur-sm text-foreground">
-                  {item.platform}
-                </Badge>
-              </div>
-              <div className="absolute top-3 end-3 flex gap-1">
-                {item.source_url && (
-                  <a
-                    href={item.source_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <Badge variant="secondary" className="text-xs font-body bg-card/90 backdrop-blur-sm text-foreground">
+                    {item.platform}
+                  </Badge>
+                </div>
+                <div className="absolute top-3 end-3 flex gap-1">
+                  {item.source_url && (
+                    <a
+                      href={item.source_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-8 h-8 rounded-full bg-card/90 backdrop-blur-sm flex items-center justify-center hover:bg-card transition-colors"
+                    >
+                      <ExternalLink className="w-4 h-4 text-foreground" />
+                    </a>
+                  )}
+                  <button
+                    onClick={() => toggleSave(item.id)}
                     className="w-8 h-8 rounded-full bg-card/90 backdrop-blur-sm flex items-center justify-center hover:bg-card transition-colors"
                   >
-                    <ExternalLink className="w-4 h-4 text-foreground" />
-                  </a>
-                )}
-                <button
-                  onClick={() => toggleSave(item.id)}
-                  className="w-8 h-8 rounded-full bg-card/90 backdrop-blur-sm flex items-center justify-center hover:bg-card transition-colors"
-                >
-                  <Bookmark className={`w-4 h-4 ${saved.has(item.id) ? 'fill-gold text-gold' : 'text-foreground'}`} />
-                </button>
+                    <Bookmark className={`w-4 h-4 ${saved.has(item.id) ? 'fill-gold text-gold' : 'text-foreground'}`} />
+                  </button>
+                </div>
+                <div className="absolute bottom-3 start-3 flex gap-2">
+                  {item.style && (
+                    <Badge variant="outline" className="text-xs font-body bg-card/90 backdrop-blur-sm border-0 text-foreground">
+                      {item.style}
+                    </Badge>
+                  )}
+                  {item.type && (
+                    <Badge variant="outline" className="text-xs font-body bg-card/90 backdrop-blur-sm border-0 text-foreground gap-1">
+                      <Tag className="w-3 h-3" /> {item.type}
+                    </Badge>
+                  )}
+                </div>
               </div>
-              <div className="absolute bottom-3 start-3 flex gap-2">
-                {item.style && (
-                  <Badge variant="outline" className="text-xs font-body bg-card/90 backdrop-blur-sm border-0 text-foreground">
-                    {item.style}
-                  </Badge>
+              <div className="p-4 relative z-10">
+                <h4 className="font-display font-semibold text-foreground line-clamp-2 text-sm">
+                  {desc}
+                </h4>
+                {item.username && (
+                  <p className="text-xs text-muted-foreground font-body mt-1">@{item.username}</p>
                 )}
-                {item.type && (
-                  <Badge variant="outline" className="text-xs font-body bg-card/90 backdrop-blur-sm border-0 text-foreground gap-1">
-                    <Tag className="w-3 h-3" /> {item.type}
-                  </Badge>
-                )}
-              </div>
-            </div>
-            <div className="p-4 relative z-10">
-              <h4 className="font-display font-semibold text-foreground line-clamp-2 text-sm">
-                {desc}
-              </h4>
-              {item.username && (
-                <p className="text-xs text-muted-foreground font-body mt-1">@{item.username}</p>
-              )}
-              <div className="flex items-center gap-3 mt-2 text-sm text-muted-foreground font-body">
-                <span className="flex items-center gap-1">
-                  <Heart className="w-3.5 h-3.5 text-gold" /> {formatLikes(item.likes)}
-                </span>
-                {item.estimated_price_mad != null && (
-                  <span className="flex items-center gap-1 font-semibold text-foreground">
-                    ~{Number(item.estimated_price_mad).toLocaleString()} MAD
+                <div className="flex items-center gap-3 mt-2 text-sm text-muted-foreground font-body">
+                  <span className="flex items-center gap-1">
+                    <Heart className="w-3.5 h-3.5 text-gold" /> {formatLikes(item.likes)}
                   </span>
-                )}
-                <span className="flex items-center gap-1">
-                  <Eye className="w-3.5 h-3.5" /> {t("trends.trending")}
-                </span>
+                  {item.estimated_price_mad != null && (
+                    <span className="flex items-center gap-1 font-semibold text-foreground">
+                      ~{Number(item.estimated_price_mad).toLocaleString()} MAD
+                    </span>
+                  )}
+                  <span className="flex items-center gap-1">
+                    <Eye className="w-3.5 h-3.5" /> {t("trends.trending")}
+                  </span>
+                </div>
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
           );
         })}
       </div>
