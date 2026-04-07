@@ -148,6 +148,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_comments_by_type: { Args: never; Returns: Json }
+      get_market_stats: { Args: never; Returns: Json }
+      get_style_distribution: { Args: never; Returns: Json }
+      get_top_models: { Args: never; Returns: Json }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
