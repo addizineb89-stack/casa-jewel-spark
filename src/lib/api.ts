@@ -10,6 +10,7 @@ export interface GoldPrices {
   usdPerOunce: number
   usdToMad: number
   updatedAt: string
+  stale?: boolean
 }
 
 export async function fetchGoldPrices(): Promise<GoldPrices> {

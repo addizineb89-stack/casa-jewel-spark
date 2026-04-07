@@ -1,4 +1,4 @@
-import { TrendingUp, Clock } from "lucide-react";
+import { TrendingUp, Clock, AlertTriangle } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { useGoldPrices } from "@/hooks/useGoldPrices";
 
@@ -13,6 +13,7 @@ function timeAgo(dateStr: string): string {
 const GoldTicker = () => {
   const { t } = useLanguage();
   const { prices, loading } = useGoldPrices();
+  const isStale = prices.stale === true;
 
   const PriceItem = ({ label, price, mobileOnly = false }: { label: string; price: number; mobileOnly?: boolean }) => (
     <div className={`flex items-center gap-3 px-6 ${mobileOnly ? "" : "hidden md:flex"}`}>
@@ -20,10 +21,12 @@ const GoldTicker = () => {
       <span className="text-primary-foreground font-display font-bold text-lg">
         {price.toFixed(2)} MAD/g
       </span>
-      <span className="flex items-center gap-1 text-sm font-medium text-green-300">
-        <TrendingUp className="w-3 h-3" />
-        Live
-      </span>
+      {!isStale && (
+        <span className="flex items-center gap-1 text-sm font-medium text-green-300">
+          <TrendingUp className="w-3 h-3" />
+          Live
+        </span>
+      )}
     </div>
   );
 
@@ -36,8 +39,17 @@ const GoldTicker = () => {
       <div className="flex items-center h-12">
         {/* Live label - hidden on mobile */}
         <div className="hidden md:flex items-center gap-2 px-4 border-e border-primary-foreground/20">
-          <div className="w-2 h-2 rounded-full bg-green-400 pulse-gold" />
-          <span className="text-primary-foreground/80 text-xs font-body font-semibold uppercase tracking-wider">{t("ticker.live")}</span>
+          {isStale ? (
+            <>
+              <div className="w-2 h-2 rounded-full bg-orange-400 animate-pulse" />
+              <span className="text-orange-300 text-xs font-body font-semibold uppercase tracking-wider">En cache</span>
+            </>
+          ) : (
+            <>
+              <div className="w-2 h-2 rounded-full bg-green-400 pulse-gold" />
+              <span className="text-primary-foreground/80 text-xs font-body font-semibold uppercase tracking-wider">{t("ticker.live")}</span>
+            </>
+          )}
           {prices.updatedAt && (
             <span className="flex items-center gap-1 text-primary-foreground/50 text-xs font-body">
               <Clock className="w-3 h-3" />
@@ -50,9 +62,13 @@ const GoldTicker = () => {
           <span className="text-primary-foreground/60 text-xs font-body">{t("ticker.goldPrice")}</span>
         </div>
 
-        {/* Mobile: green dot + only 18K & 24K */}
+        {/* Mobile: status dot + only 18K & 24K */}
         <div className="flex md:hidden items-center gap-2 px-3 border-e border-primary-foreground/20">
-          <div className="w-2 h-2 rounded-full bg-green-400 pulse-gold" />
+          {isStale ? (
+            <div className="w-2 h-2 rounded-full bg-orange-400 animate-pulse" />
+          ) : (
+            <div className="w-2 h-2 rounded-full bg-green-400 pulse-gold" />
+          )}
         </div>
 
         {loading ? (
