@@ -33,7 +33,7 @@ export function useMarketInsights() {
     queryFn: async () => {
       const { data, error } = await supabase.rpc("get_market_stats");
       if (error) throw error;
-      return data as MarketStats;
+      return data as unknown as MarketStats;
     },
   });
 
@@ -42,7 +42,7 @@ export function useMarketInsights() {
     queryFn: async () => {
       const { data, error } = await supabase.rpc("get_style_distribution");
       if (error) throw error;
-      return (data as StyleDistribution[]) || [];
+      return (data as unknown as StyleDistribution[]) || [];
     },
   });
 
@@ -51,7 +51,7 @@ export function useMarketInsights() {
     queryFn: async () => {
       const { data, error } = await supabase.rpc("get_comments_by_type");
       if (error) throw error;
-      return (data as CommentsByType[]) || [];
+      return (data as unknown as CommentsByType[]) || [];
     },
   });
 
@@ -60,7 +60,7 @@ export function useMarketInsights() {
     queryFn: async () => {
       const { data, error } = await supabase.rpc("get_top_models");
       if (error) throw error;
-      return (data as TopModel[]) || [];
+      return (data as unknown as TopModel[]) || [];
     },
   });
 
